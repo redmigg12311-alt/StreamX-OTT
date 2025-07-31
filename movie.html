@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StreamX | Movies</title>
+  <!-- Google Fonts & Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="css/movies.css" />
+</head>
+
+<body>
+
+  <div id="header-placeholder"></div>
+
+  <main>
+    <section class="hero" aria-label="Featured Movie">
+      <div class="hero-media">
+        <img id="hero-image" src="https://wallpapers.com/images/hd/spider-man-2-lva058fvoz0dpt37.jpg"
+          alt="Hero Banner" />
+        <video id="hero-video" autoplay playsinline>
+          <source src="assets/video/becoming_spider_man_scene.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <button type="button" id="muteToggle" class="mute-toggle material-icons" aria-label="Toggle Mute">
+        volume_off
+      </button>
+      <div class="hero-content">
+        <h2>The Amazing Spider-Man 2</h2>
+        <p>CBFC: U/A 2014 ‧ Action/Adventure ‧ 2h 22m</p>
+        <p style="color: rgb(255, 217, 0); font-weight: 800">Hindi, Adventure, Action, Drama</p>
+        <p>
+          Spider-Man struggles to balance his personal life and hero duties
+          while facing a powerful new enemy, Electro, and uncovering secrets
+          about his parents' past.
+        </p>
+        <div class="hero-buttons">
+          <button type="button" class="play-btn">
+            <span class="material-icons">play_arrow</span>Play
+          </button>
+          <button type="button" class="info-btn">
+            <span class="material-icons">info</span>More Info
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="filter-container">
+      <label for="genreFilter">Filter by Genre: </label>
+      <select id="genreFilter">
+        <option value="All">All</option>
+      </select>
+    </div>
+
+    <div id="movie-sections"></div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="js\movies\moviesdata.js"></script>
+  <script src="js\movies.js"></script>
+</body>
+
+</html>

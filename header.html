@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTT Header</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header.css">
+</head>
+<body>
+
+    <!-- Mobile menu toggle button -->
+    <button class="menu-toggle">☰</button>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <span class="stream">Stream</span>
+            <span class="x">X</span>
+        </div>
+
+        <ul class="menu-bar" id="menuBar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="movie.html">Movies</a></li>
+            <li><a href="series.html">Series</a></li>
+            <li><a href="live-tv.html">Live TV</a></li>
+            <li><a href="sports.html">Sports</a></li>
+            <li><a href="search.html">Search</a></li>
+            <li><a href="profile.html">My Profile</a></li>
+        </ul>
+    </header>
+
+    <!-- Script: Toggle mobile menu -->
+    <script>
+        const toggleBtn = document.querySelector('.menu-toggle');
+        const menuBar = document.getElementById('menuBar');
+
+        toggleBtn.addEventListener('click', () => {
+            menuBar.classList.toggle('show');
+        });
+    </script>
+
+</body>
+</html>

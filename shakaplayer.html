@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DRM Stream Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.compiled.min.js"></script>
+  <style>
+    body { background: #000; margin: 0; }
+    video { width: 100%; height: 100vh; }
+  </style>
+</head>
+<body>
+  <video id="video" autoplay controls></video>
+  <script>
+    async function initPlayer() {
+      const manifestUri = new URLSearchParams(window.location.search).get('play');
+      const video = document.getElementById('video');
+      const player = new shaka.Player(video);
+
+      // DRM Config — Replace with real Widevine license URL and headers
+      player.configure({
+        drm: {
+          servers: {
+            'com.widevine.alpha': 'https://your-license-server.com/license',
+          },
+          advanced: {
+            'com.widevine.alpha': {
+              videoRobustness: 'SW_SECURE_DECODE',
+              audioRobustness: 'SW_SECURE_DECODE',
+            },
+          },
+          // Optional custom headers
+          // clearKeys: { 'keyId': 'key' }, // For test content only
+        },
+      });
+
+      try {
+        await player.load(manifestUri);
+        console.log('The video has now been loaded!');
+      } catch (e) {
+        console.error('Error loading video', e);
+      }
+    }
+
+    shaka.polyfill.installAll();
+    if (shaka.Player.isBrowserSupported()) {
+      initPlayer();
+    } else {
+      console.error('Browser not supported!');
+    }
+  </script>
+</body>
+</html>

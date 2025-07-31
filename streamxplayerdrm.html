@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Live TV | StreamX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+  <style>
+    html,
+    body {
+      min-height: 100%;
+      background: #000 !important;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      margin: 100px auto 40px;
+      padding: 1rem;
+    }
+
+    .ambient-glow {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      transition: box-shadow 0.3s;
+    }
+
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(20, 20, 20, 0.7);
+      border-radius: 10px 10px 0 0;
+      backdrop-filter: blur(6px);
+    }
+
+    .channel-info img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .channel-info span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    #player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ccc;
+    }
+
+    /* JW Player theme tweaks */
+    .jwplayer .jw-icon-inline.jw-button-color,
+    .jwplayer .jw-icon.jw-button-color path {
+      color: #00e5ff !important;
+      fill: #00e5ff !important;
+    }
+
+    .jwplayer .jw-progress {
+      background-color: #00e5ff !important;
+    }
+
+    .jwplayer .jw-settings-menu,
+    .jwplayer .jw-option,
+    .jwplayer .jw-text {
+      background: #111 !important;
+      color: #eee !important;
+      font-size: 16px !important;
+      /* Increased font size */
+    }
+
+    .jw-settings-menu {
+      border-radius: 10px !important;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+      transition: all 0.3s ease-in-out !important;
+      overflow: hidden !important;
+    }
+
+    .jw-settings-menu .jw-settings-content-item {
+      padding: 12px 18px !important;
+      border-bottom: 1px solid #333;
+      font-size: 16px !important;
+      /* Increased font size */
+    }
+
+    .jw-settings-menu .jw-settings-content-item:hover {
+      background-color: #222 !important;
+      color: #fff !important;
+    }
+
+    .jw-icon-inline.jw-button-color:hover {
+      filter: brightness(1.4);
+    }
+
+    /* Make JW Player's time/duration text background transparent */
+    .jwplayer .jw-text-elapsed,
+    .jwplayer .jw-text-duration {
+      background: transparent !important;
+      font-size: 15px !important;
+      /* Increased font size */
+      color: #eee !important;
+    }
+
+    /* Remove gray bar behind time text (controls area) */
+    .jwplayer .jw-controlbar .jw-slider-time {
+      background: transparent !important;
+    }
+
+    /* Optional: Increase size of subtitles/captions if used */
+    .jwplayer .jw-text-track {
+      font-size: 20px !important;
+      color: #00e5ff !important;
+    }
+
+    @media (max-width: 768px) {
+      .video-wrapper {
+        margin-top: 80px;
+        padding: 1rem;
+      }
+
+      .channel-info span {
+        font-size: 1rem;
+      }
+
+      .channel-info img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
+
+  <!-- VIDEO SECTION -->
+  <div class="video-wrapper">
+    <div class="ambient-glow">
+      <!-- Channel Info -->
+      <div class="channel-info" id="channel-info" style="display: none;">
+        <img id="channel-logo" src="" alt="Logo" />
+        <span id="channel-name"></span>
+      </div>
+
+      <!-- Player -->
+      <div id="player"></div>
+    </div>
+    <canvas id="color-sample-canvas" style="display: none;"></canvas>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer-container"></div>
+
+  <!-- JW Player Setup + Channel Info Logic -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const src = params.get("play");
+    const drm = params.get("drm") || "clearkey";
+    const kidKey = params.get("keyid");
+    const channelName = params.get("channel");
+    const logoUrl = params.get("logo");
+
+    // Channel display
+    if (channelName && logoUrl) {
+      const infoBox = document.getElementById("channel-info");
+      document.getElementById("channel-name").textContent = decodeURIComponent(channelName);
+      document.getElementById("channel-logo").src = decodeURIComponent(logoUrl);
+      infoBox.style.display = "flex";
+    }
+
+    if (!src || !kidKey || !kidKey.includes(":")) {
+      document.querySelector(".video-wrapper").innerHTML = "<h2>Missing or invalid DRM parameters.</h2>";
+    } else {
+      const [keyId, key] = kidKey.split(":");
+
+      jwplayer("player").setup({
+        file: src,
+        type: "dash",
+        autostart: true,
+        controls: true,
+        mute: false,
+        cast: {},
+        airplay: true,
+        width: "100%",
+        aspectratio: "16:9",
+        skin: { name: "glow" },
+        drm: {
+          [drm]: { keyId, key },
+        },
+        playbackRateControls: true,
+      });
+    }
+  </script>
+
+  <!-- Header Loader -->
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        const toggleBtn = document.querySelector(".menu-toggle");
+        const menuBar = document.getElementById("menuBar");
+        if (toggleBtn && menuBar) {
+          toggleBtn.addEventListener("click", () => {
+            menuBar.classList.toggle("show");
+          });
+        }
+      });
+  </script>
+
+  <!-- Footer Loader -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer-container").innerHTML = data;
+      });
+  </script>
+
+  <!-- Ambient Glow -->
+  <script>
+    function setupAmbientLight() {
+      const ambientGlow = document.querySelector(".ambient-glow");
+      const canvas = document.getElementById("color-sample-canvas");
+      let video;
+
+      function getJWPlayerVideoElem() {
+        return document.querySelector("#player video");
+      }
+
+      function getDominantColor() {
+        if (!video) return { r: 30, g: 30, b: 30 };
+        canvas.width = 32;
+        canvas.height = 18;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let r = 0, g = 0, b = 0, count = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          r += data[i]; g += data[i + 1]; b += data[i + 2]; count++;
+        }
+        return count === 0 ? { r: 30, g: 30, b: 30 } : {
+          r: Math.round(r / count),
+          g: Math.round(g / count),
+          b: Math.round(b / count),
+        };
+      }
+
+      function setGlow(color) {
+        ambientGlow.style.boxShadow = `0 0 60px 16px rgba(${color.r},${color.g},${color.b},0.70)`;
+      }
+
+      function updateAmbient() {
+        if (!video || video.paused) {
+          requestAnimationFrame(updateAmbient);
+          return;
+        }
+        try {
+          const color = getDominantColor();
+          setGlow(color);
+        } catch {
+          setGlow({ r: 30, g: 30, b: 30 });
+        }
+        requestAnimationFrame(updateAmbient);
+      }
+
+      function waitForVideo() {
+        video = getJWPlayerVideoElem();
+        if (video) {
+          updateAmbient();
+        } else {
+          setTimeout(waitForVideo, 200);
+        }
+      }
+
+      waitForVideo();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      function tryHook() {
+        if (window.jwplayer && typeof jwplayer === "function") {
+          jwplayer().on("play", setupAmbientLight);
+        } else {
+          setTimeout(tryHook, 200);
+        }
+      }
+      tryHook();
+    });
+  </script>
+</body>
+
+</html>

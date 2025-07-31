@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StreamX | Home</title>
+
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/movies.css" />
+</head>
+
+<body>
+    <!-- Header will load dynamically -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- 🔥 Hero Banner -->
+        <section class="hero" aria-label="Featured Movie">
+            <div class="hero-media">
+                <img id="hero-image" src="https://wallpapers.com/images/hd/spider-man-2-lva058fvoz0dpt37.jpg"
+                    alt="Hero Banner" />
+                <video id="hero-video" autoplay playsinline muted loop>
+                    <source src="assets/video/becoming_spider_man_scene.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <button type="button" id="muteToggle" class="mute-toggle material-icons"
+                aria-label="Toggle Mute">volume_off</button>
+
+            <div class="hero-content">
+                <h2>The Amazing Spider-Man 2</h2>
+                <p>CBFC: U/A 2014 • Action/Adventure • 2h 22m</p>
+                <p style="color: #ffd900; font-weight: 800;">Hindi, Adventure, Action, Drama</p>
+                <p>Spider-Man struggles to balance his personal life and hero duties while facing a powerful new enemy,
+                    Electro, and uncovering secrets about his parents' past.</p>
+
+                <div class="hero-buttons">
+                    <button type="button" class="play-btn">
+                        <span class="material-icons">play_arrow</span>Play
+                    </button>
+                    <button type="button" class="info-btn">
+                        <span class="material-icons">info</span>More Info
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🎯 Genre Filter -->
+        <div class="filter-container">
+            <label for="genreFilter">Filter by Genre:</label>
+            <select id="genreFilter">
+                <option value="All">All</option>
+                <!-- Dynamic genre options populated by JS -->
+            </select>
+        </div>
+
+        <!-- 📺 Content Sections -->
+        <section class="category-section">
+            <h2 class="genre-title">Movies</h2>
+            <div class="grid" id="moviesGrid"></div>
+        </section>
+
+        <section class="category-section">
+            <h2 class="genre-title">Series</h2>
+            <div class="grid" id="seriesGrid"></div>
+        </section>
+
+        <section class="category-section">
+            <h2 class="genre-title">Live TV</h2>
+            <div class="grid" id="liveTvGrid"></div>
+        </section>
+
+        <section class="category-section">
+            <h2 class="genre-title">Sports</h2>
+            <div class="grid" id="sportsGrid"></div>
+        </section>
+
+        <section class="category-section">
+            <h2 class="genre-title">Watch History</h2>
+            <div class="grid" id="historyGrid"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <!-- Load livetv.js -->
+    <script src="js/livetv/livetv.js"></script>
+    <script>
+        window.channels = typeof channels !== "undefined" ? channels : [];
+    </script>
+
+    <!-- Load moviesdata.js -->
+    <script src="js/movies/moviesdata.js"></script>
+    <script>
+        window.movies = typeof movies !== "undefined" ? movies : [];
+    </script>
+
+    <!-- Load main logic -->
+    <script src="js/series/home2.js" defer></script>
+
+</body>
+
+</html>

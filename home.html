@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamX OTT</title>
+
+  <!-- Google Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+  <!-- Slick Slider CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+  <!-- Header injected by JS -->
+  <div id="header-placeholder"></div>
+
+  <!-- === HERO SECTION === -->
+  <section class="hero-section" aria-label="Featured Movie">
+    <div class="hero-slider-container">
+      <div id="hero-slider" class="hero-slider"></div>
+
+      <!-- Movie Details -->
+      <div class="movie-info" id="movie-info">
+        <div id="movie-logo" class="movie-logo" aria-label="Movie logo"></div>
+        <p id="movie-meta"></p>
+        <p id="movie-description"></p>
+        <button id="play-btn" class="glass-btn" aria-label="Play Trailer">
+          <span class="material-icons-outlined">play_arrow</span> Play Trailer
+        </button>
+      </div>
+
+      <!-- Close Video Button -->
+      <button id="close-video" class="glass-btn close-video">Close ×</button>
+
+      <!-- Fullscreen Video -->
+      <video id="fullscreen-video" class="hidden" controls tabindex="0" style="display: none"></video>
+    </div>
+  </section>
+
+  <!-- === CONTENT SECTIONS === -->
+
+  <section class="section glass" aria-label="Trending Movies">
+    <h2>
+      <span class="material-icons-outlined">local_fire_department</span>
+      Trending Movies
+    </h2>
+    <div id="trending-slider" class="slick-slider"></div>
+  </section>
+
+  <!-- === LIVE TV SECTION === -->
+  <section class="section glass" aria-label="Live TV Channels">
+    <h2>
+      <span class="material-icons-outlined">live_tv</span>
+      Live TV Channels
+    </h2>
+    <div id="livetv-slider" class="slick-slider"></div>
+  </section>
+
+  <section class="section glass" aria-label="Watch History">
+    <h2>
+      <span class="material-icons-outlined">history</span> Watch History
+    </h2>
+    <div id="history-slider" class="slick-slider"></div>
+  </section>
+
+  <section class="section glass" aria-label="Popular Series">
+    <h2><span class="material-icons-outlined">movie</span> Popular Series</h2>
+    <div id="series-slider" class="slick-slider"></div>
+  </section>
+
+  <section class="section glass" aria-label="Sports">
+    <h2><span class="material-icons-outlined">sports_soccer</span> Sports</h2>
+    <div id="sports-slider" class="slick-slider"></div>
+  </section>
+
+  <!-- === SCRIPTS === -->
+
+  <div id="footer-container"></div>
+  <!-- Slick Slider Scripts -->
+  <!-- Hero Data -->
+  <script src="js/heroData.js"></script>
+
+  <!-- Section JS Files -->
+  <script src="js/livetv/livetv.js"></script>
+  <script src="js/liveTV.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/series.js"></script>
+  <script src="js/sports.js"></script>
+
+  <!-- Inject Header -->
+  <script>
+    fetch("header.html")
+      .then((res) => res.text())
+      .then((data) => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        const toggleBtn = document.querySelector(".menu-toggle");
+        const menuBar = document.getElementById("menuBar");
+        if (toggleBtn && menuBar) {
+          toggleBtn.addEventListener("click", () => {
+            menuBar.classList.toggle("show");
+          });
+        }
+      });
+  </script>
+
+  <!-- Footer Injection -->
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer-container").innerHTML = data;
+      });
+  </script>
+
+  <!-- Hero Logic -->
+  <script>
+    window.addEventListener("load", () => {
+      const slider = document.getElementById("hero-slider");
+      const logoContainer = document.getElementById("movie-logo");
+      const meta = document.getElementById("movie-meta");
+      const description = document.getElementById("movie-description");
+      const playBtn = document.getElementById("play-btn");
+      const closeBtn = document.getElementById("close-video");
+      const videoPlayer = document.getElementById("fullscreen-video");
+
+      let currentIndex = 0;
+
+      heroMovies.forEach((movie, index) => {
+        const img = document.createElement("img");
+        img.src = movie.image;
+        img.alt = movie.imageAlt || movie.title;
+        img.classList.add("hero-image");
+        if (index === 0) img.classList.add("active");
+        slider.appendChild(img);
+      });
+
+      function updateHero(index) {
+        const movie = heroMovies[index];
+        const images = document.querySelectorAll(".hero-slider img");
+        images.forEach((img, i) => {
+          img.classList.toggle("active", i === index);
+        });
+        logoContainer.innerHTML = `<img src="${movie.logo}" alt="${movie.title} Logo">`;
+        meta.textContent = `${movie.genres.join(" | ")} | ${movie.year} | ${movie.runtime
+          }`;
+        description.textContent = movie.description;
+        playBtn.onclick = () => {
+          videoPlayer.src = movie.video;
+          videoPlayer.style.display = "block";
+          videoPlayer.play();
+          closeBtn.style.display = "inline-flex";
+          videoPlayer.requestFullscreen?.();
+        };
+      }
+
+      closeBtn.addEventListener("click", () => {
+        videoPlayer.pause();
+        videoPlayer.style.display = "none";
+        videoPlayer.src = "";
+        closeBtn.style.display = "none";
+        document.exitFullscreen?.();
+      });
+
+      updateHero(currentIndex);
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % heroMovies.length;
+        updateHero(currentIndex);
+      }, 6000);
+    });
+  </script>
+</body>
+
+</html>

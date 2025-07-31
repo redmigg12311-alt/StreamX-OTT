@@ -1,0 +1,152 @@
+/* == Global Styles == */
+body {
+  background: #101320;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* == Section Titles == */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2.2rem 0 1.2rem 1.2rem;
+  color: #fff;
+}
+
+/* == Card Grid == */
+.poster-grid {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 1.5rem 1rem;
+}
+
+/* == Poster Card == */
+.poster-card {
+  position: relative;
+  width: 360px;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  background: #181b25;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(.42,0,.58,1);
+}
+
+.poster-card:hover {
+  transform: scale(1.04);
+  z-index: 10;
+}
+
+/* == Poster Image == */
+.poster-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* == Overlay == */
+.poster-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 22, 32, 0.88);
+  color: #fff;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 24px 20px 24px;
+  box-sizing: border-box;
+  transition: opacity 0.35s cubic-bezier(.42,0,.58,1);
+}
+
+.poster-card:hover .poster-overlay {
+  opacity: 1;
+}
+
+/* == Overlay Content == */
+.poster-title {
+  font-size: 1.38rem;
+  font-weight: 600;
+  margin-bottom: 0.44rem;
+  color: #00e5ff;
+  letter-spacing: 0.01em;
+}
+
+.poster-desc {
+  font-size: 1rem;
+  color: #ddd;
+  margin-bottom: 1.2rem;
+}
+
+.poster-btn-row {
+  display: flex;
+  gap: 18px;
+}
+
+/* == Action Buttons == */
+.poster-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #00e5ff;
+  color: #09223b;
+  transition: background 0.21s;
+  margin-right: 4px;
+}
+
+.poster-btn:hover {
+  background: #fff;
+}
+
+/* LIVE Badge */
+.badge-live {
+  display: inline-block;
+  background: #ff2263;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.3em 0.9em;
+  border-radius: 12px;
+  margin-bottom: 0.95rem;
+  margin-right: 8px;
+  letter-spacing: 0.04em;
+}
+
+/* == Responsive == */
+@media (max-width: 600px) {
+  .poster-card {
+    width: 95vw;
+    min-width: 220px;
+    aspect-ratio: 16 / 9;
+  }
+  .poster-grid {
+    gap: 10px;
+    padding: 1rem 0.2rem;
+  }
+  .section-title {
+    font-size: 1.12rem;
+    margin: 1.1rem 0 0.7rem 0.6rem;
+  }
+  .poster-overlay {
+    padding: 10px 10px 16px 10px;
+  }
+  .poster-title {
+    font-size: 1.01rem;
+  }
+  .poster-desc {
+    font-size: 0.87rem;
+  }
+  .poster-btn {
+    font-size: 0.92rem;
+    padding: 7px 12px;
+  }
+}

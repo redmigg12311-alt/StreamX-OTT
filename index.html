@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StreamX Loading</title>
+  <style>
+    :root {
+      /* Light mode background */
+      --theme-fg: #181c27;
+      /* Light mode foreground */
+      --theme-accent: #6096fd;
+      --theme-subtle: #e0e7ff;
+      --logo-box: #f5f7fb;
+
+      /* To switch to dark theme, uncomment these:
+      --theme-bg: #181c27;
+      --theme-fg: #fff;
+      --theme-accent: #6096fd;
+      --theme-subtle: #23273a;
+      --logo-box: #23273a;
+      */
+    }
+
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      font-family: 'Space Grotesk', 'Inter', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background .5s, color .5s;
+    }
+
+    .loader-container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-box {
+      background: var(--logo-box);
+      border-radius: 1.5rem;
+      padding: 1.5rem 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 24px 0 var(--theme-subtle);
+      display: inline-block;
+      transition: background .5s;
+    }
+
+    .logo {
+      font-size: 2.5rem;
+      letter-spacing: -2px;
+      font-weight: 700;
+      color: var(--theme-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .2rem;
+      line-height: 1;
+    }
+
+    .logo span {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--theme-fg);
+      background: var(--theme-accent);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border-radius: .5rem;
+      animation: rotateX 2s cubic-bezier(.68, -.55, .27, 1.55) infinite;
+      display: inline-block;
+      margin-left: 0.1em;
+    }
+
+    @keyframes rotateX {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      15% {
+        transform: rotateY(360deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 0.8rem auto;
+      border: 3px solid var(--theme-subtle);
+      border-top: 3px solid var(--theme-accent);
+      border-radius: 50%;
+      animation: spin 1.25s linear infinite;
+      box-sizing: border-box;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-size: 1.1rem;
+      color: #555a;
+      letter-spacing: 0.03em;
+      animation: fade-in 2s ease infinite alternate;
+      margin-top: 0.2rem;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0.5;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .logo-box {
+        padding: 1.1rem 1.2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      .logo span {
+        font-size: 2rem;
+      }
+
+      .loading-text {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="loader-container" aria-label="Loading">
+    <div class="logo-box">
+      <div class="logo">
+        Stream<span>X</span>
+      </div>
+    </div>
+    <div class="spinner" role="status"></div>
+    <div class="loading-text">Loading your experience...</div>
+  </main>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 3000);  // 3000 milliseconds = 3 seconds
+  </script>
+
+</body>
+
+</html>

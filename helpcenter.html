@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamX | Help Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: #0e0e0e;
+      color: white;
+    }
+
+    header {
+      background-color: #000;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    header nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: linear-gradient(120deg, #141414, #1f1f1f);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-box {
+      margin-top: 1.5rem;
+    }
+
+    .search-box input {
+      padding: 0.75rem;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .topics {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .topic {
+      background-color: #1a1a1a;
+      padding: 1rem;
+      border-radius: 8px;
+      transition: transform 0.2s;
+      color: #ddd;
+    }
+
+    .topic:hover {
+      transform: translateY(-4px);
+      background-color: #2c2c2c;
+    }
+
+    footer {
+      background-color: #000;
+      color: #888;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    #chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      max-height: 500px;
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+
+    #chatbot-header {
+      background-color: #00adef;
+      padding: 0.75rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 0.75rem;
+    }
+
+    .user {
+      text-align: right;
+      color: #00adef;
+    }
+
+    .bot {
+      text-align: left;
+      color: #ccc;
+    }
+
+    #chatbot-input {
+      display: flex;
+      border-top: 1px solid #444;
+      background: #121212;
+    }
+
+    #chatbot-input input {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      background: transparent;
+      color: white;
+    }
+
+    #chatbot-input button {
+      background: #00adef;
+      border: none;
+      color: white;
+      padding: 0 1rem;
+      cursor: pointer;
+    }
+
+    #preset-select {
+      margin: 8px 10px 0;
+      padding: 6px;
+      width: calc(100% - 20px);
+      border-radius: 4px;
+      background-color: #111;
+      color: white;
+      border: 1px solid #444;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Stream<span style="color:#00adef">X</span></div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Support</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Welcome to StreamX Help Center</h1>
+    <p>How can we assist you today?</p>
+    <div class="search-box">
+      <input type="text" placeholder="Type a question or issue...">
+    </div>
+  </div>
+
+  <section class="topics">
+    <div class="topic">Getting Started</div>
+    <div class="topic">Account Issues</div>
+    <div class="topic">Streaming Quality</div>
+    <div class="topic">Payment & Billing</div>
+    <div class="topic">Parental Controls</div>
+    <div class="topic">More Topics...</div>
+  </section>
+
+  <footer>
+    &copy; 2025 StreamX Inc. | <a href="#" style="color: #888;">Privacy Policy</a> | <a href="#" style="color: #888;">Terms of Use</a>
+  </footer>
+
+  <div id="chatbot">
+    <div id="chatbot-header">Ask StreamBot 🤖</div>
+    <select id="preset-select">
+      <option value="">Choose a question...</option>
+      <option value="How do I change my password?">How do I change my password?</option>
+      <option value="Why is my video buffering?">Why is my video buffering?</option>
+      <option value="Where can I update my payment method?">Where can I update my payment method?</option>
+      <option value="How to cancel subscription?">How to cancel subscription?</option>
+    </select>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input">
+      <input type="text" id="chat-input" placeholder="Ask me anything...">
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById('chatbot-messages');
+
+    function sendMessage(text = null) {
+      const input = document.getElementById('chat-input');
+      const msgText = text || input.value.trim();
+      if (!msgText) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.innerText = msgText;
+      messagesDiv.appendChild(userMsg);
+
+      input.value = '';
+
+      const botMsg = document.createElement('div');
+      botMsg.className = 'message bot';
+      botMsg.innerText = 'Thinking...';
+      messagesDiv.appendChild(botMsg);
+
+      setTimeout(() => {
+        botMsg.innerText = getBotResponse(msgText);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }, 500);
+    }
+
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+      if (input.includes("account")) return "You can update your account in Account Settings.";
+      if (input.includes("stream")) return "Please check your internet speed or lower resolution.";
+      if (input.includes("payment") || input.includes("billing")) return "Go to Profile > Billing to update payment info.";
+      if (input.includes("cancel")) return "You can cancel your subscription from your profile under Subscription Settings.";
+      if (input.includes("password")) return "To change your password, go to Settings > Security.";
+      return "Sorry, I didn't understand that. Try rephrasing your question.";
+    }
+
+    document.getElementById("preset-select").addEventListener("change", function() {
+      if (this.value) sendMessage(this.value);
+    });
+  </script>
+</body>
+</html>

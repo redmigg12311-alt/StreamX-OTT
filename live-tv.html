@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     
+    <meta charset="UTF-8" />
+     
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     
+    <title>Live TV | StreamX</title>
+     
+    <link rel="stylesheet" href="css/home.css" />
+     
+    <link rel="stylesheet" href="css/livetv.css" />
+     
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+     
+    <!-- Header injected by JS -->
+     
+    <!-- Header will load dynamically -->
+    <div id="header-placeholder"></div>
+
+     
+    <!-- Live TV Section -->
+     
+    <main>
+         
+      <section id="livetv-sections" aria-label="Live TV channels"></section>
+       
+    </main>
+
+     
+    <!-- Footer injected by JS -->
+     
+    <footer
+      id="footer-container"
+      role="contentinfo"
+      aria-label="Site footer"
+    ></footer>
+
+     
+    <!-- JS for header/footer injection -->
+     
+    <script>
+      // Inject Header
+      fetch("header.html")
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to load header");
+          return res.text();
+        })
+        .then((html) => {
+          document.getElementById("header-placeholder").innerHTML = html;
+          const toggleBtn = document.querySelector(".menu-toggle");
+          const menuBar = document.getElementById("menuBar");
+          if (toggleBtn && menuBar) {
+            toggleBtn.addEventListener("click", () => {
+              menuBar.classList.toggle("show");
+            });
+          }
+        })
+        .catch((err) => console.error("Header load error:", err));
+
+      // Inject Footer
+      fetch("footer.html")
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to load footer");
+          return res.text();
+        })
+        .then((html) => {
+          document.getElementById("footer-container").innerHTML = html;
+        })
+        .catch((err) => console.error("Footer load error:", err));
+    </script>
+
+     
+    <!-- Load main scripts -->
+     
+    <script src="js/header.js" defer></script>
+     
+    <script src="js/livetv/live.js" defer></script>
+     
+    <script src="js/footer.js" defer></script>
+  </body>
+</html>
