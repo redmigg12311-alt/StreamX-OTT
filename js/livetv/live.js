@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const channels = [
+  window.channels = [
     {
       id: "aajtak",
       name: "Aaj Tak HD",

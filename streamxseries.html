@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Now Playing - Series Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: "Space Grotesk", sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #player-container {
+      position: relative;
+      width: 100vw;
+      height: 50vh;
+      background: #000;
+    }
+
+    #video-title {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #00e5ff;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+
+    #episode-list {
+      flex: 1;
+      overflow-y: auto;
+      background: #121212;
+      padding: 16px 24px;
+    }
+
+    .episode-item {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: #222;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+      outline-offset: 2px;
+    }
+
+    .episode-item:hover,
+    .episode-item:focus-visible {
+      background: #00e5ff;
+      color: #181818;
+      outline: 2px solid #00e5ff;
+    }
+
+    .episode-thumb {
+      width: 140px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .episode-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .episode-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .episode-desc {
+      font-weight: 400;
+      color: #ccc;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="player-container">
+    <div id="video-title">Loading...</div>
+    <div id="player"></div>
+  </div>
+
+  <div id="episode-list" aria-label="Episode List" tabindex="0"></div>
+
+  <!-- Load seriesData -->
+  <script src="seriesdata.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!window.seriesData || seriesData.length === 0) {
+        alert("Series data not found");
+        return;
+      }
+
+      const series = seriesData[0]; // Select the first series, can be dynamic
+
+      const titleElement = document.getElementById("video-title");
+      const episodeListContainer = document.getElementById("episode-list");
+      let playerInstance;
+      let currentEpisode = null;
+
+      function getFileType(src) {
+        if (src.endsWith(".mp4")) return "mp4";
+        if (src.endsWith(".m3u8")) return "hls";
+        if (src.endsWith(".mpd")) return "dash";
+        return "";
+      }
+
+      function setupPlayer(episode) {
+        const fileType = getFileType(episode.src);
+        if (playerInstance) {
+          playerInstance.load([{ file: episode.src, type: fileType, title: episode.title }]);
+          playerInstance.play();
+        } else {
+          playerInstance = jwplayer("player").setup({
+            file: episode.src,
+            type: fileType,
+            width: "100%",
+            height: "100%",
+            aspectratio: "16:9",
+            autostart: true,
+            mute: false,
+            controls: true,
+            displaytitle: false,
+            displaydescription: false,
+            stretching: "uniform",
+            skin: { name: "seven" },
+            cast: {},
+            airplay: true
+          });
+          playerInstance.on("ready", () => {
+            if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+            }
+            showTitleTemporarily();
+          });
+        }
+        titleElement.textContent = episode.title;
+        currentEpisode = episode;
+        highlightActiveEpisode();
+      }
+
+      let hideTimeout;
+      function showTitleTemporarily() {
+        titleElement.style.display = "block";
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+          titleElement.style.display = "none";
+        }, 5000);
+      }
+
+      document.addEventListener("mousemove", () => {
+        showTitleTemporarily();
+      });
+
+      function buildEpisodeList(series) {
+        episodeListContainer.innerHTML = "";
+        series.seasons.forEach(season => {
+          const seasonHeader = document.createElement("h2");
+          seasonHeader.textContent = season.name;
+          seasonHeader.style.color = "#00e5ff";
+          seasonHeader.style.marginTop = "16px";
+          episodeListContainer.appendChild(seasonHeader);
+
+          season.episodes.forEach(ep => {
+            const epItem = document.createElement("div");
+            epItem.className = "episode-item";
+            epItem.tabIndex = 0;
+            epItem.innerHTML = `
+              <img src="${ep.thumbnail}" alt="${ep.title} thumbnail" class="episode-thumb" loading="lazy" />
+              <div class="episode-details">
+                <div class="episode-title">${ep.title}</div>
+                <div class="episode-desc">${ep.description}</div>
+              </div>
+            `;
+
+            epItem.addEventListener("click", () => setupPlayer(ep));
+            epItem.addEventListener("keydown", e => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setupPlayer(ep);
+              }
+            });
+
+            episodeListContainer.appendChild(epItem);
+          });
+        });
+      }
+
+      function highlightActiveEpisode() {
+        const epItems = episodeListContainer.querySelectorAll(".episode-item");
+        epItems.forEach(item => {
+          const title = item.querySelector(".episode-title").textContent;
+          if (title === currentEpisode.title) {
+            item.classList.add("active");
+            // Scroll it into view smoothly within the episode list
+            item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      }
+
+      if (series.seasons.length && series.seasons[0].episodes.length) {
+        setupPlayer(series.seasons[0].episodes[0]);
+      }
+
+      buildEpisodeList(series);
+    });
+  </script>
+
+</body>
+
+</html>

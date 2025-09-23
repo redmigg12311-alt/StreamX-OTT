@@ -22,6 +22,26 @@ const movies = [
     url: "streamxmovie.html?src=https://d3sgzbosmwirao.cloudfront.net/video/4a0c88576a098a9f96ef61dfcb33b841fd630ac6117f4b24d240f1af99741234/2/hls/h264_high.m3u8&name=Sonu Ke Titu Ki Sweety",
   },
   {
+    title: "Rocky and Rani's Prem Kahani",
+    category: "Action | Thriller | Romance | Drama",
+    genre: "New on StreamX",
+    description:
+      "After a decade-long prison sentence, an ex-convict endeavours to meet his daughter. However, he faces numerous obstacles during his journey.",
+    thumbnail:
+      "https://qqcdnpictest.mxplay.com/pic/b1bea43d6c4d7719e1926a82bee205eb/en/2x3/320x480/test_pic1757476275137_badged_1757739612836.webp",
+    url: "streamxmovie.html?src=https://d3s0ximcru5bdx.cloudfront.net/RARPK_23-Full-Mezz_HDR-hi-IN-1757652684424/cmaf/H_264/RARPK_23-Full-Mezz_HDR-hi-IN/viacom18-V18_RARPK_23-Full-Mezz_HDR-hi-IN.m3u8&name=Rocky and Rani's Prem Kahani",
+  },
+  {
+    title: "Bawaal",
+    category: "Romance | Drama | Action",
+    genre: "New on StreamX",
+    description:
+      "A history teacher suffering from PTSD meets a free-spirited woman who helps him confront his past. Together, they embark on a journey that changes their lives forever.",
+    thumbnail:
+      "https://qqcdnpictest.mxplay.com/pic/6a84f5380b2b1e61ace0a641113bf473/en/2x3/320x480/69b397b58766c1dc953ebe67d6d3f681_1280x1920.webp",
+    url: "streamxmovie.html?src=https://d3s0ximcru5bdx.cloudfront.net/BAWAAL_23-Full-Mezz_HDR-hi-IN-R1-1755864322310/cmaf/H_264/BAWAAL_23-Full-Mezz_HDR-hi-IN-R1/nadiadwalagrandsonentertainment-NGE_BAWAAL_23-Full-Mezz_HDR-hi-IN-R1.m3u8&name=Bawaal",
+  },
+  {
     title: "Bholaa",
     category: "Action | Thriller",
     genre: "New on StreamX",
@@ -100,6 +120,16 @@ const movies = [
     thumbnail:
       "https://qqcdnpictest.mxplay.com/pic/f11cec31eff8ae5a0984017b3c252e02/en/2x3/320x480/test_pic1733468574850.webp",
     url: "streamxmovie.html?src=https://d3sgzbosmwirao.cloudfront.net/video/5729040e90016403200cd84f5a2c847218ab0676f11733ea0292d3d4a8540136/2/hls/h264_high.m3u8&name=Housefull 2",
+  },
+  {
+    title: "Rocky and Rani's Prem Kahani",
+    category: "Action | Thriller | Romance | Drama",
+    genre: "Drama",
+    description:
+      "After a decade-long prison sentence, an ex-convict endeavours to meet his daughter. However, he faces numerous obstacles during his journey.",
+    thumbnail:
+      "https://qqcdnpictest.mxplay.com/pic/b1bea43d6c4d7719e1926a82bee205eb/en/2x3/320x480/test_pic1757476275137_badged_1757739612836.webp",
+    url: "streamxmovie.html?src=https://d3s0ximcru5bdx.cloudfront.net/RARPK_23-Full-Mezz_HDR-hi-IN-1757652684424/cmaf/H_264/RARPK_23-Full-Mezz_HDR-hi-IN/viacom18-V18_RARPK_23-Full-Mezz_HDR-hi-IN.m3u8&name=Rocky and Rani's Prem Kahani",
   },
   {
     title: "Jab We Met",
@@ -659,7 +689,7 @@ const movies = [
       "An animated superhero film that follows the story of Miles Morales, a teenager who becomes the Spider-Man of his universe. The film is a visually stunning and action-packed ride.",
     thumbnail:
       "https://qqcdnpictest.mxplay.com/pic/dfa987f8eb42b75b31e2c09fcedd3045/en/2x3/320x480/test_pic1737645523572.webp",
-    url: "streamxmovie.html?src=https://d3sgzbosmwirao.cloudfront.net/video/f765649e7b0b9f87f3c5d9c96eda620855123362e09f8290cceb78e882bbdcaa/4/dash/h264_high.mpd&drm=clearkey&keyid=d558448f26a051f48f79b79a638e8ceb&key=06a94a47896f57128bc40020f807d332&name=Spider-Man%3A%20Into%20The%20Spider-Verse"
+    url: "streamxmovie.html?src=https://d3sgzbosmwirao.cloudfront.net/video/f765649e7b0b9f87f3c5d9c96eda620855123362e09f8290cceb78e882bbdcaa/4/dash/h264_high.mpd&drm=clearkey&keyid=d558448f26a051f48f79b79a638e8ceb&key=06a94a47896f57128bc40020f807d332&name=Spider-Man%3A%20Into%20The%20Spider-Verse",
   },
   {
     title: "The Amazing Spider-Man 2",

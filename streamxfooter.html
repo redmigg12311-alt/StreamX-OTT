@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamX Footer Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      background: url('https://assets.nflxext.com/ffe/siteui/vlv3/c95abc7a-8124-4630-bb7a-3b160bdc6de3/web/IN-en-20250915-TRIFECTA-perspective_d3d87aa7-58ed-4c6b-98dc-231ed05ba675_small.jpg')
+        center/cover no-repeat fixed;
+      color: #ccc;
+      width: 100%;
+      min-height: 100vh;
+      /* remove flex, let content flow normally */
+    }
+
+    footer.footer {
+      width: 100%;
+      /* gradient overlay + glass */
+      background: linear-gradient(to top,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.6) 50%,
+        rgba(0,0,0,0.3) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .footer-content {
+      max-width: 1440px; /* wider */
+      margin: 0 auto;    /* center inside full-width footer */
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .footer-social {
+      text-align: center;
+    }
+
+    .footer-social a {
+      margin: 0 10px;
+      color: #ccc;
+      font-size: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-social a:hover {
+      color: #00e5ff;
+    }
+
+    .footer-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+
+    .footer-links-grid ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-links-grid li {
+      margin: 8px 0;
+    }
+
+    .footer-links-grid a {
+      color: #999;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links-grid a:hover {
+      color: #00e5ff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .service-code {
+      background: none;
+      border: 1px solid #555;
+      padding: 8px 16px;
+      color: #ccc;
+      font-size: 13px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .service-code:hover {
+      background-color: #00e5ff;
+      color: #000000;
+      font-weight: bolder;
+    }
+
+    .disclaimer {
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .footer-links-grid {
+        text-align: left;
+      }
+
+      .footer-social a {
+        font-size: 18px;
+        margin: 0 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- page content above ... -->
+
+  <footer class="footer">
+    <div class="footer-content">
+
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+
+      <div class="footer-links-grid">
+        <ul>
+          <li><a href="#">Audio Description</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Legal Notices</a></li>
+        </ul>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Jobs</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+        </ul>
+        <ul>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Corporate Information</a></li>
+        </ul>
+        <ul>
+          <li><a href="#">Media Center</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <button class="service-code">Service Code</button>
+        <p>© <span id="year"></span> StreamX, Inc.</p>
+        <p>StreamX is a registered trademark of StreamX, Inc.</p>
+        <p>All rights reserved.</p>
+      </div>
+
+      <div class="disclaimer">
+        <p>This is a demo application for educational purposes only. No actual streaming services are provided.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const yearSpan = document.getElementById("year");
+      yearSpan.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+export const heroMovies = [
+  {
+    id: "1",
+    title: "Satyaprem Ki Katha",
+    logo: "https://qqcdnpictest.mxplay.com/pic/e7fc707d89e6355190c132227a32dd80/en/16x9/320x180/test_pic1754037986413.png",
+    genres: "Romance • Drama",
+    year: 2025,
+    runtime: "2h 30m",
+    language: "Hindi",
+    description: "Sattu is a good hearted but good for nothing LLB fail guy who dreams of marrying the IT girl of Ahmedabad Katha, a girl way out of his league. However fate has other plans and Katha and he end up getting married, much to Katha’s dismay. From here on starts Sattu’s tryst to make his wife fall in love with him and how while doing so, he ends up discovering himself and proves to be a worthy husband",
+    image: "https://qqcdnpictest.mxplay.com/pic/2c798dfbf33e7f20f43ac17c56ab7fe1/en/16x9/1600x900/test_pic1753972809950.webp",
+    thumbnail: "https://qqcdnpictest.mxplay.com/pic/2c798dfbf33e7f20f43ac17c56ab7fe1/en/16x9/1280x720/test_pic1753972785757.webp",
+    imageAlt: "Hero shot from The Sandman movie",
+    video: "assets/video/Satyaprem Ki Katha.mp4",
+    hasTrailer: true,
+    rating: "PG-13",
+    src: "https://d3s0ximcru5bdx.cloudfront.net/SKK_23-Full-Mezz_UHD-hi-IN-1735902718936/cmaf/H_264/SKK_23-Full-Mezz_UHD-hi-IN/nadiadwalagrandsonentertainment-NGE_SKK_23-Full-Mezz_UHD-hi-IN.m3u8"
+  },
+  {
+    id: "2",
+    title: "Bawaal",
+    logo: "https://qqcdnpictest.mxplay.com/pic/63217a91be4fd6010241db5fb68611e0/en/16x9/320x180/test_pic1754379934536.png",
+    genres: "Romance • Drama • Action",
+    year: 2023,
+    runtime: "2h 17m",
+    language: "Hindi",
+    description: "Ajay Dixit, an ordinary history teacher in a high school, enjoys mini celebrityhood in his town courtesy the fake image he has built. He shares a strained relationship with his newly-wed wife. Circumstances force him to take a trip to Europe for the World War 2 trail accompanied by his wife. Will his relationship with his wife survive this trip? Will he manage to win the war within?",
+    image: "https://qqcdnpictest.mxplay.com/pic/63217a91be4fd6010241db5fb68611e0/en/16x9/1600x900/test_pic1754379930760.webp",
+    thumbnail: "https://qqcdnpictest.mxplay.com/pic/6a84f5380b2b1e61ace0a641113bf473/en/16x9/1280x720/f9244fc8d86d342d2924c3588c35ab6c_1920x1080.webp",
+    imageAlt: "Hero shot from The Sandman movie",
+    video: "assets/video/Bawaal.mp4",
+    hasTrailer: true,
+    rating: "PG-13",
+    src: "https://d3s0ximcru5bdx.cloudfront.net/BAWAAL_23-Full-Mezz_HDR-hi-IN-R1-1740373756927/cmaf/H_264/BAWAAL_23-Full-Mezz_HDR-hi-IN-R1/nadiadwalagrandsonentertainment-NGE_BAWAAL_23-Full-Mezz_HDR-hi-IN-R1.m3u8"
+  },
+  {
+    id: "3",
+    title: "First Copy",
+    logo: "https://qqcdnpictest.mxplay.com/pic/52907d91416f490c981ff7c7e608dbbf/en/16x9/320x180/test_pic1750339940711.png",
+    genres: "Drama • Family",
+    year: 2025,
+    runtime: "1 Season 10 Episodes",
+    language: "Hindi",
+    description: "Set in Mumbai during the bustling 1990s, First Copy follows the gripping story of Arif, a daring and charismatic man who becomes the most wanted film pirate in the city. In a time before digital streaming and anti-piracy laws were strong, Arif finds a profitable loophole: distributing illegal copies of Bollywood films. With passion, cleverness, and street-smart instincts, he builds a vast underground network, becoming the go-to name for first-day film copies, hence earning the nickname First Copy.",
+    image: "https://qqcdnpictest.mxplay.com/pic/52907d91416f490c981ff7c7e608dbbf/en/16x9/1600x900/test_pic1750339930143.webp",
+    thumbnail: "https://qqcdnpictest.mxplay.com/pic/52907d91416f490c981ff7c7e608dbbf/en/16x9/1280x720/test_pic1750924972818.webp",
+    imageAlt: "Hero shot from The Sandman movie",
+    video: "assets/video/First Copy.mp4",
+    hasTrailer: true,
+    rating: "UA-16+",
+    src: "https://d3s0ximcru5bdx.cloudfront.net/SKK_23-Full-Mezz_UHD-hi-IN-1735902718936/cmaf/H_264/SKK_23-Full-Mezz_UHD-hi-IN/nadiadwalagrandsonentertainment-NGE_SKK_23-Full-Mezz_UHD-hi-IN.m3u8"
+  }
+];

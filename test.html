@@ -15,9 +15,9 @@
     <meta property="og:description"
         content="Watch live sports in HD with smooth playback – StreamX covers football, cricket, and more!" />
     <meta property="og:image"
-        content="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/1d6ada58-4603-4525-9647-234fdaaef7ca.png" />
+        content="https://i.ibb.co/nq4bBffn/image.png" />
     <meta property="og:url" content="https://ultrawebs.github.io/-/" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="website" />  
     <meta property="og:site_name" content="StreamX" />
 
     <!-- Twitter Card Meta -->
@@ -26,20 +26,20 @@
     <meta name="twitter:description"
         content="StreamX lets you watch live sports events – football, cricket, and more – in full HD." />
     <meta name="twitter:image"
-        content="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/1d6ada58-4603-4525-9647-234fdaaef7ca.png" />
+        content="https://i.ibb.co/nq4bBffn/image.png" />
     <meta name="twitter:site" content="@StreamX" />
     <meta name="twitter:creator" content="@StreamX" />
 
     <!-- Favicon -->
     <link rel="icon"
-        href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png"
+        href="https://i.ibb.co/FknwrzQs/image.png"
         type="image/x-icon" />
     <link rel="apple-touch-icon"
-        href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png" />
+        href="https://i.ibb.co/FknwrzQs/image.png" />
     <link rel="icon" type="image/png" sizes="32x32"
-        href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png" />
+        href="https://i.ibb.co/FknwrzQs/image.png" />
     <link rel="icon" type="image/png" sizes="16x16"
-        href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png" />
+        href="https://i.ibb.co/FknwrzQs/image.png" />
     <link rel="manifest" href="site.webmanifest" />
 
     <!-- Fonts or CSS (optional, include your CSS here) -->
@@ -289,7 +289,7 @@
         }
 
         .grid-scroll-btn:hover:not(:disabled) {
-            background: rgba(0, 0, 0, 0.9);
+            background: #00e5ff;
             transform: translateY(-50%) scale(1.1);
             opacity: 1;
         }
@@ -334,7 +334,7 @@
         }
 
         .footer-social a:hover {
-            color: #fff;
+            color: #00e5ff;
         }
 
         .footer-links-grid {
@@ -362,7 +362,7 @@
         }
 
         .footer-links-grid a:hover {
-            color: #fff;
+            color: #00e5ff;
         }
 
         .footer-bottom {
@@ -387,7 +387,7 @@
         }
 
         .service-code:hover {
-            background-color: #222;
+            background-color: #00e5ff;
             color: #fff;
         }
 
@@ -550,7 +550,6 @@
             <div class="footer-bottom">
                 <button class="service-code">Service Code</button>
                 <p>© 2024 – 2025 FanCode Live Sports, Inc.</p>
-                <p> Terms of Use | Privacy Policy | Cookie Preferences </p>
                 <p>All rights reserved.</p>
             </div>
 
@@ -592,13 +591,8 @@
                     return;
                 }
 
-                // Construct player URL
-                const playerUrl = new URL("fancodeplayer.html", window.location.origin);
-                playerUrl.searchParams.set("src", streamUrl);
-                playerUrl.searchParams.set("name", match.title || 'Live Match');
-
-                // Open in a new tab safely
-                window.open(playerUrl.toString(), "_blank", "noopener,noreferrer");
+                // Open raw stream URL directly in a new tab/window
+                window.open(streamUrl, "_blank", "noopener,noreferrer");
             }
 
 

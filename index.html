@@ -1,171 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>StreamX Loading</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      /* Light mode background */
-      --theme-fg: #181c27;
-      /* Light mode foreground */
-      --theme-accent: #6096fd;
-      --theme-subtle: #e0e7ff;
-      --logo-box: #f5f7fb;
-
-      /* To switch to dark theme, uncomment these:
-      --theme-bg: #181c27;
-      --theme-fg: #fff;
-      --theme-accent: #6096fd;
-      --theme-subtle: #23273a;
-      --logo-box: #23273a;
-      */
+      --red500: hsl(358, 78%, 49%);
+      --red400: hsl(358, 78%, 59%);
+      --red300: hsl(358, 78%, 69%);
+      --orange500: hsl(26, 91%, 54%);
+      --orange400: hsl(26, 91%, 64%);
+      --orange300: hsl(26, 91%, 74%);
+      --green500: hsl(80, 57%, 51%);
+      --green400: hsl(80, 57%, 61%);
+      --green300: hsl(80, 57%, 71%);
+      --blue500: hsl(210, 69%, 42%);
+      --blue400: hsl(210, 69%, 52%);
+      --blue300: hsl(210, 69%, 62%);
+      --gray50: hsl(223, 10%, 95%);
+      --gray950: hsl(223, 10%, 5%);
     }
 
-    html,
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      height: 100%;
-      background: var(--theme-bg);
-      color: var(--theme-fg);
-      font-family: 'Space Grotesk', 'Inter', Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      transition: background .5s, color .5s;
+      padding: 0;
+      font-family: 'Space Grotesk', sans-serif;
     }
 
-    .loader-container {
-      text-align: center;
+    body {
+      background-color: var(--gray950);
+      font-family: sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--gray950);
+      z-index: 9999;
       display: flex;
       flex-direction: column;
-      align-items: center;
-    }
-
-    .logo-box {
-      background: var(--logo-box);
-      border-radius: 1.5rem;
-      padding: 1.5rem 2.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 24px 0 var(--theme-subtle);
-      display: inline-block;
-      transition: background .5s;
-    }
-
-    .logo {
-      font-size: 2.5rem;
-      letter-spacing: -2px;
-      font-weight: 700;
-      color: var(--theme-accent);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      gap: .2rem;
-      line-height: 1;
+      align-items: center;
+      color: white;
     }
 
-    .logo span {
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--theme-fg);
-      background: var(--theme-accent);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      border-radius: .5rem;
-      animation: rotateX 2s cubic-bezier(.68, -.55, .27, 1.55) infinite;
-      display: inline-block;
-      margin-left: 0.1em;
+    .logo-text {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: white;
     }
 
-    @keyframes rotateX {
-      0% {
-        transform: rotateY(0deg);
-      }
+    .logo-text span {
+      color: #00e5ff;
+    }
 
-      15% {
-        transform: rotateY(360deg);
-      }
+    .percentage {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      color: #ccc;
+    }
 
-      100% {
-        transform: rotateY(360deg);
+    .pl {
+      width: 16em;
+      height: auto;
+    }
+
+    .pl__brick--red {
+      --brick-top: var(--red300);
+      --brick-left: var(--red400);
+      fill: var(--red500);
+    }
+
+    .pl__brick--orange {
+      --brick-top: var(--orange300);
+      --brick-left: var(--orange400);
+      fill: var(--orange500);
+    }
+
+    .pl__brick--green {
+      --brick-top: var(--green300);
+      --brick-left: var(--green400);
+      fill: var(--green500);
+    }
+
+    .pl__brick--blue {
+      --brick-top: var(--blue300);
+      --brick-left: var(--blue400);
+      fill: var(--blue500);
+    }
+
+    .pl__brick-group {
+      animation: brick-bounce 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+    }
+
+    .pl__brick-group--1 { animation-name: brick-move-1; }
+    .pl__brick-group--2 { animation-name: brick-move-2; }
+    .pl__brick-group--3 { animation-name: brick-move-3; }
+    .pl__brick-group--4 { animation-name: brick-move-4; }
+
+    @keyframes brick-bounce {
+      from, 12%, 15%, 27%, 30%, 42%, 45%, 62%, 65%, 77%, 80%, 92%, 95%, to {
+        transform: translate(0, 0);
+      }
+      13.5%, 28.5%, 43.5%, 63.5%, 78.5%, 93.5% {
+        transform: translate(0, 6px);
       }
     }
 
-    .spinner {
-      width: 38px;
-      height: 38px;
-      margin: 0 auto 0.8rem auto;
-      border: 3px solid var(--theme-subtle);
-      border-top: 3px solid var(--theme-accent);
-      border-radius: 50%;
-      animation: spin 1.25s linear infinite;
-      box-sizing: border-box;
+    @keyframes brick-move-1 {
+      0%, 4%, 92%, 100% { transform: translate(0, 0); }
+      12%, 19%, 77%, 84% { transform: translate(17.5px, 10px); }
+      27%, 34%, 62%, 69% { transform: translate(35px, 20px); }
+      42%, 54% { transform: translate(52.5px, 30px); }
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    @keyframes brick-move-2 {
+      0%, 92%, 100% { transform: translate(0, -47px); }
+      4% { transform: translate(0, -87px); }
+      8% { transform: translate(-35px, -87px); }
+      12%, 80% { transform: translate(-35px, -67px); }
+      84% { transform: translate(-35px, -107px); }
+      88% { transform: translate(0, -67px); }
     }
 
-    .loading-text {
-      font-size: 1.1rem;
-      color: #555a;
-      letter-spacing: 0.03em;
-      animation: fade-in 2s ease infinite alternate;
-      margin-top: 0.2rem;
+    @keyframes brick-move-3 {
+      0%, 15%, 77%, 100% { transform: translate(0, -47px); }
+      19% { transform: translate(0, -87px); }
+      23% { transform: translate(-35px, -87px); }
+      27%, 65% { transform: translate(-35px, -67px); }
+      69% { transform: translate(-35px, -107px); }
+      73% { transform: translate(0, -67px); }
     }
 
-    @keyframes fade-in {
-      from {
-        opacity: 0.5;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .logo-box {
-        padding: 1.1rem 1.2rem;
-      }
-
-      .logo {
-        font-size: 1.5rem;
-      }
-
-      .logo span {
-        font-size: 2rem;
-      }
-
-      .loading-text {
-        font-size: 1rem;
-      }
+    @keyframes brick-move-4 {
+      0%, 30%, 62%, 100% { transform: translate(0, -47px); }
+      34% { transform: translate(0, -87px); }
+      38% { transform: translate(-35px, -87px); }
+      42%, 50% { transform: translate(-35px, -67px); }
+      54% { transform: translate(-35px, -107px); }
+      58% { transform: translate(0, -67px); }
     }
   </style>
 </head>
 
 <body>
-  <main class="loader-container" aria-label="Loading">
-    <div class="logo-box">
-      <div class="logo">
-        Stream<span>X</span>
-      </div>
-    </div>
-    <div class="spinner" role="status"></div>
-    <div class="loading-text">Loading your experience...</div>
-  </main>
+  <div id="loader">
+    <div class="logo-text">Stream<span>X</span></div>
+
+    <svg class="pl" viewBox="0 0 420 420" width="420px" height="420px" role="img"
+      aria-label="Stack of four LEGO bricks jumping left one stud at a time.">
+      <defs>
+        <symbol id="brick">
+          <polygon fill="var(--brick-top)" points="70 0,140 39,70 125,0 39" />
+          <polygon fill="var(--brick-left)" points="0 39,70 78,71 78,70 125,0 86" />
+          <polygon points="70 78,140 39,140 86,70 125" />
+          <use href="#studs" />
+        </symbol>
+        <symbol id="stud">
+          <rect y="1" rx="14" ry="8" width="28" height="24" />
+          <ellipse fill="var(--brick-top)" cx="14" cy="8" rx="14" ry="8" />
+        </symbol>
+        <symbol id="studs">
+          <use href="#stud" transform="translate(21, 22)" />
+          <use href="#stud" transform="translate(56, 3)" />
+          <use href="#stud" transform="translate(56, 41)" />
+          <use href="#stud" transform="translate(91, 22)" />
+        </symbol>
+      </defs>
+      <g transform="translate(140, 218)">
+        <g class="pl__brick-group">
+          <g class="pl__brick-group pl__brick-group--1">
+            <use class="pl__brick pl__brick--blue" href="#brick" />
+            <g class="pl__brick-group pl__brick-group--2" transform="translate(0, -47)">
+              <use class="pl__brick pl__brick--green" href="#brick" />
+              <g class="pl__brick-group pl__brick-group--3" transform="translate(0, -47)">
+                <use class="pl__brick pl__brick--orange" href="#brick" />
+                <g class="pl__brick-group pl__brick-group--4" transform="translate(0, -47)">
+                  <use class="pl__brick pl__brick--red" href="#brick" />
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+
+    <div class="percentage" id="percentage">0%</div>
+  </div>
 
   <script>
-    setTimeout(() => {
-      window.location.href = "home.html";
-    }, 3000);  // 3000 milliseconds = 3 seconds
+    const percentageEl = document.getElementById("percentage");
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        progress++;
+        percentageEl.textContent = progress + "%";
+      } else {
+        clearInterval(interval);
+      }
+    }, 60); // Total = 60ms × 100 = 6 seconds
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 6000); // Redirect after 6s
+    });
   </script>
-
 </body>
-
 </html>

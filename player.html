@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <meta name="description"
+    content="Watch live sports in HD fullscreen. Smooth streaming for football, cricket, and more.">
+  <meta property="og:title" content="Now Playing - StreamMovie" />
+  <meta property="og:description" content="Watch live sports now!" />
+  <meta property="og:image"
+    content="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/1d6ada58-4603-4525-9647-234fdaaef7ca.png" />
+  <meta property="og:type" content="video.other" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Icons -->
+  <link rel="icon"
+    href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png"
+    type="image/png" />
+  <link rel="apple-touch-icon"
+    href="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/2ec485e0-d1e6-408e-a86b-2deec6c123c1.png" />
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --accent: #00e5ff;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+      font-family: 'Space Grotesk', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .glass-container {
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 900px;
+      margin-top: 50px;
+    }
+
+    .video-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .plyr--full-ui input[type=range] {
+      color: var(--accent);
+    }
+
+    .plyr--video .plyr__control.plyr__tab-focus,
+    .plyr--video .plyr__control:hover,
+    .plyr--video .plyr__control[aria-expanded="true"] {
+      background: var(--accent);
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px 25px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+      max-width: 900px;
+      width: 90%;
+      box-shadow: 0 4px 16px rgba(0, 229, 255, 0.1);
+    }
+
+    #cast-button {
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glass-container">
+    <div class="video-title" id="videoTitle">Loading...</div>
+    <video id="player" controls crossorigin playsinline x-webkit-airplay="allow" airplay="allow"
+      disablepictureinpicture></video>
+    <div id="cast-button">
+      <!-- Placeholder for Chromecast button -->
+      <google-cast-launcher style="height: 40px; width: 40px;"></google-cast-launcher>
+    </div>
+  </div>
+
+  <footer>
+    This player is for <strong>educational purposes only</strong>. Streaming rights and content ownership belong to
+    their respective providers.
+  </footer>
+
+  <!-- Plyr & HLS.js -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0/dist/hls.min.js"></script>
+
+  <!-- Google Cast SDK -->
+  <script type="text/javascript"
+    src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const src = urlParams.get('src');
+      const name = urlParams.get('name') || 'Untitled Stream';
+      const poster = urlParams.get('poster');
+
+      const video = document.getElementById('player');
+      const titleElement = document.getElementById('videoTitle');
+
+      const decodedName = decodeURIComponent(name);
+
+      titleElement.textContent = decodedName;
+      document.title = decodedName;
+
+      if (poster) {
+        video.setAttribute('poster', decodeURIComponent(poster));
+      }
+
+      const defaultOptions = {};
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(decodeURIComponent(src));
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+          const availableQualities = hls.levels.map(l => l.height);
+          availableQualities.unshift(0);
+
+          defaultOptions.quality = {
+            default: 0,
+            options: availableQualities,
+            forced: true,
+            onChange: (q) => {
+              hls.currentLevel = q === 0 ? -1 : hls.levels.findIndex(l => l.height === q);
+            }
+          };
+
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            }
+          };
+
+          hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+            const span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span");
+            if (hls.autoLevelEnabled && hls.levels[data.level]) {
+              span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`;
+            } else {
+              span.innerHTML = `AUTO`;
+            }
+          });
+
+          new Plyr(video, defaultOptions);
+        });
+      } else {
+        video.src = decodeURIComponent(src);
+        new Plyr(video, defaultOptions);
+      }
+    });
+  </script>
+</body>
+
+</html>

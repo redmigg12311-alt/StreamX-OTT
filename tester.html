@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>FanCode Live Sports - Dynamic Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Meta Description -->
+    <meta name="description"
+        content="StreamX brings you live sports action in HD – football, cricket, tennis, and more. Enjoy buffer-free streaming, real-time scores, and smooth playback on any device.">
+
+    <!-- Open Graph Meta (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Live Sports | StreamX" />
+    <meta property="og:description"
+        content="Watch live sports in HD with smooth playback – StreamX covers football, cricket, and more!" />
+    <meta property="og:image" content="https://i.ibb.co/nq4bBffn/image.png" />
+    <meta property="og:url" content="https://ultrawebs.github.io/-/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StreamX" />
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Live Sports | StreamX" />
+    <meta name="twitter:description"
+        content="StreamX lets you watch live sports events – football, cricket, and more – in full HD." />
+    <meta name="twitter:image" content="https://i.ibb.co/nq4bBffn/image.png" />
+    <meta name="twitter:site" content="@StreamX" />
+    <meta name="twitter:creator" content="@StreamX" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.ibb.co/FknwrzQs/image.png" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://i.ibb.co/FknwrzQs/image.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/FknwrzQs/image.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/FknwrzQs/image.png" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- Fonts or CSS (optional, include your CSS here) -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #00e5ff;
+            --bg-dark: #191b20;
+            --section-bg: #181b25;
+            --card-bg: #141416;
+            --live: #ff2263;
+            --upc: #eabe0e;
+            --text: #e8e8ef;
+            --footer-bg: #0d0e12;
+            --footer-text: #888ea8;
+            --footer-link: #00bfff;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--section-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 1.3rem 2vw 1.1rem 2vw;
+            position: sticky;
+            top: 0;
+            z-index: 111;
+        }
+
+        .title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 16px #00e5ff24;
+            user-select: none;
+            margin: 0;
+        }
+
+        #searchBar {
+            border-radius: 22px;
+            border: 1.4px solid var(--primary);
+            width: 330px;
+            max-width: 60vw;
+            padding: 9px 22px;
+            font-size: 0.99em;
+            background: #12151b;
+            color: #fff;
+            outline: none;
+            transition: box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        #searchBar:focus {
+            box-shadow: 0 0 5px var(--primary);
+        }
+
+        /* Section Titles */
+        .section-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-left: 4px solid var(--primary);
+            margin: 2.2rem 0 1.1rem 0;
+            padding: 0.25em 1.1em;
+            background: transparent;
+            user-select: none;
+        }
+
+        /* Live Now horizontal scroll wrapper with buttons */
+        .live-scroll-wrapper {
+            position: relative;
+            margin: 0 0 2rem 0;
+        }
+
+        .live-scroll-row {
+            display: flex;
+            gap: 1.2rem;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .live-scroll-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Slide buttons */
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--primary);
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s, transform 0.3s;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: #000;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .slide-btn:disabled {
+            opacity: 0.25;
+            cursor: default;
+        }
+
+        .slide-btn.left {
+            left: 5px;
+        }
+
+        .slide-btn.right {
+            right: 5px;
+        }
+
+        /* Match cards */
+        .match-card {
+            width: 325px;
+            min-width: 325px;
+            max-width: 325px;
+            height: 470px;
+            /* Fixed height for uniformity */
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 21px #0007;
+            display: flex;
+            flex-direction: column;
+            scroll-snap-align: start;
+            border: 1.3px solid #222c;
+            user-select: none;
+            position: relative;
+            transition: transform 0.14s;
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px) scale(1.015);
+        }
+
+        .match-img-wrap {
+            width: 100%;
+            aspect-ratio: 1.38 / 1;
+            background: #242a2e;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .match-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: scale 0.21s;
+        }
+
+        .match-card:hover .match-img {
+            scale: 1.03;
+        }
+
+        .match-badge {
+            position: absolute;
+            top: 13px;
+            left: 13px;
+            background: var(--live);
+            color: #fff;
+            font-size: 0.78em;
+            font-weight: 700;
+            padding: 3.5px 15px 4px 15px;
+            border-radius: 22px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 2px 10px #ff226344;
+            user-select: none;
+        }
+
+        .match-badge.upc {
+            background: var(--upc);
+            color: #181818;
+            box-shadow: 0 2px 10px #eabe0e88;
+        }
+
+        .match-info {
+            flex: 1 1 auto;
+            padding: 15px 18px 18px 18px;
+            background: rgba(23, 31, 51, 0.88);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Push buttons to bottom */
+            gap: 6px;
+        }
+
+        .teams-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 7px;
+        }
+
+        .team-flag {
+            width: 24px;
+            height: 17px;
+            object-fit: contain;
+            border-radius: 3px;
+            border: 1px solid #252e42bb;
+            margin-right: 2px;
+            background: #0a111433;
+        }
+
+        .team-name {
+            font-weight: 700;
+            font-size: 1em;
+            color: #fff;
+        }
+
+        .vs {
+            margin: 0 7px;
+            opacity: 0.5;
+            font-weight: 600;
+        }
+
+        .match-title {
+            font-size: 1.08em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .match-tournament {
+            font-size: 0.95em;
+            color: #b1e8fc;
+        }
+
+        .match-time {
+            font-size: 0.98em;
+            color: #aceaf7;
+        }
+
+        .buttons {
+            margin-top: 0;
+            display: flex;
+            gap: 10px;
+            justify-content: stretch;
+        }
+
+        .btn {
+            flex: 1 1 120px;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.97em;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.17s, color 0.16s;
+            background: linear-gradient(90deg, #09e8ff, #009cc9 90%);
+            color: #10181a;
+            box-shadow: 0 1.5px 8px #00e5ff24;
+            outline: none;
+            min-width: 110px;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .btn .material-icons {
+            font-family: 'Material Icons';
+            font-size: 1.27em;
+            font-style: normal;
+            line-height: 1;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .btn.disabled,
+        .btn:disabled {
+            background: #284455;
+            color: #bddbe7;
+            pointer-events: none;
+            opacity: 0.54;
+        }
+
+        /* Categories grid */
+        .category-section .matches-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.44rem;
+            margin: 0 0 1.8rem 0;
+        }
+
+        .category-section .match-card {
+            width: 325px;
+            min-width: 325px;
+            max-width: 325px;
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .match-card {
+                width: 94vw;
+                min-width: 94vw;
+                max-width: 94vw;
+                height: auto;
+                /* allow height to auto to fit content better on smaller screens */
+            }
+
+            .category-section .match-card {
+                width: 96vw;
+                min-width: 96vw;
+                max-width: 96vw;
+                height: auto;
+            }
+
+            .category-section .matches-grid {
+                gap: 0.9rem;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .title {
+                margin-bottom: 9px;
+            }
+        }
+
+        @media (max-width: 530px) {
+            #searchBar {
+                width: 100vw;
+                max-width: 99vw;
+                padding: 8px 10px;
+            }
+
+            .match-card,
+            .category-section .match-card {
+                width: 99vw;
+                min-width: 99vw;
+                max-width: 99vw;
+                height: auto;
+            }
+        }
+
+
+        /* Footer styles */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            font-size: 0.85rem;
+            padding: 24px 16px;
+            text-align: center;
+            user-select: none;
+            border-top: 1px solid #222;
+            margin-top: auto;
+            letter-spacing: 0.02em;
+        }
+
+        footer p {
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.38;
+            font-weight: 400;
+        }
+
+        @media (max-width: 600px) {
+            footer {
+                font-size: 0.78rem;
+                padding: 18px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="title">FanCode Live Sports</div>
+        <input id="searchBar" type="search" placeholder="Search matches, teams, events..." autocomplete="off" />
+    </header>
+    <main>
+        <div>
+            <div class="section-title">Live Now</div>
+            <div class="live-scroll-wrapper">
+                <button class="slide-btn left" aria-label="Scroll live matches left" disabled>&#10094;</button>
+                <div class="live-scroll-row" id="liveRow"></div>
+                <button class="slide-btn right" aria-label="Scroll live matches right">&rsaquo;</button>
+            </div>
+        </div>
+        <div id="categories"></div>
+    </main>
+    <footer>
+        <p><strong>Disclaimer:</strong> This site is intended for educational and demonstration purposes only. No actual
+            streaming or content distribution is provided here.</p>
+    </footer>
+    <script>
+        const API = "https://api.allorigins.win/raw?url=" +
+            encodeURIComponent("https://raw.githubusercontent.com/Jitendraunatti/fancode/refs/heads/main/data/fancode.json") +
+            "&cacheBust=" + Date.now();
+
+        function teamBlock(team) {
+            return `
+      <span style="display:flex;align-items:center;gap:5px;">
+        ${team.flag?.src ? `<img class="team-flag" src="${team.flag.src}" alt="">` : ""}
+        <span class="team-name">${team.shortName || team.name || ""}</span>
+      </span>`;
+        }
+
+        function matchCard(match, live = false) {
+            const adFree = match.adfree_stream || match.STREAMING_CDN?.Primary_Playback_URL;
+            const dai = match.STREAMING_CDN?.dai_google_cdn || match.dai_stream;
+            const poster = match.image_cdn?.APP || match.image || "";
+            return `
+      <div class="match-card">
+        <div class="match-img-wrap">
+          <img class="match-img" src="${poster}" alt="${match.title} poster" loading="lazy" />
+          <span class="match-badge${live ? "" : " upc"}">${live ? "LIVE" : "UPCOMING"}</span>
+        </div>
+        <div class="match-info">
+          <div class="teams-row">
+            ${teamBlock(match.teams[0])}
+            <span class="vs" aria-hidden="true">vs</span>
+            ${teamBlock(match.teams[1])}
+          </div>
+          <div class="match-title">${match.title}</div>
+          <div class="match-tournament">${match.tournament || ""}</div>
+          <div class="match-time">${match.startTime || ""}</div>
+          <div class="buttons">
+            <a
+              ${adFree && adFree !== "Unavailable" ? `href="fancodeplayer.html?src=${encodeURIComponent(adFree)}&name=${encodeURIComponent(match.title)}&poster=${encodeURIComponent(poster)}" target="_blank" rel="noopener"` : 'class="btn disabled" tabindex="-1"'}
+              class="btn"
+            >
+              <span class="material-icons">play_circle</span>Ad-Free
+            </a>
+            <a
+              ${dai && dai !== "Unavailable" ? `href="player.html?src=${encodeURIComponent(dai)}&name=${encodeURIComponent(match.title + " (With Ads)")}&poster=${encodeURIComponent(poster)}" target="_blank" rel="noopener"` : 'class="btn disabled" tabindex="-1"'}
+              class="btn"
+            >
+              <span class="material-icons">play_circle</span>With Ads
+            </a>
+          </div>
+        </div>
+      </div>`;
+        }
+
+        function renderLive(liveMatches) {
+            const liveRow = document.getElementById("liveRow");
+            liveRow.innerHTML =
+                liveMatches.length ? liveMatches.map((match) => matchCard(match, true)).join("") : '<p style="padding:1.8em;color:#aaa;font-size:1.2em;">No live matches right now.</p>';
+            updateSlideButtons();
+        }
+
+        function renderCategories(categoryMap) {
+            const catDiv = document.getElementById("categories");
+            catDiv.innerHTML = "";
+            for (const [cat, matches] of Object.entries(categoryMap)) {
+                if (matches.length) {
+                    const sect = document.createElement("section");
+                    sect.className = "category-section";
+                    sect.innerHTML = `<div class="section-title">${cat}</div>
+          <div class="matches-grid">${matches.map((m) => matchCard(m, false)).join("")}</div>`;
+                    catDiv.appendChild(sect);
+                }
+            }
+        }
+
+        let fullData = null;
+
+        function filterAndRender(data, search = "") {
+            const all = data.matches || [];
+            const q = search?.toLowerCase() || "";
+
+            // All live matches show in live section
+            const liveMatches = all.filter(
+                (m) =>
+                    m.status === "LIVE" &&
+                    (!q ||
+                        [m.title, m.tournament, m.category, ...m.teams.map((t) => t.name), ...m.teams.map((t) => t.shortName)].some((x) =>
+                            x?.toLowerCase().includes(q)
+                        ))
+            );
+            renderLive(liveMatches);
+
+            // Not Live, grouped by category
+            const categoryGroups = {};
+            all.forEach((m) => {
+                if (m.status === "LIVE") return; // don't duplicate live
+                if (
+                    q &&
+                    ![m.title, m.tournament, m.category, ...m.teams.map((t) => t.name), ...m.teams.map((t) => t.shortName)].some((x) =>
+                        x?.toLowerCase().includes(q)
+                    )
+                )
+                    return;
+                categoryGroups[m.category] = categoryGroups[m.category] || [];
+                categoryGroups[m.category].push(m);
+            });
+            renderCategories(categoryGroups);
+        }
+
+        const liveRow = document.getElementById("liveRow");
+        const btnLeft = document.querySelector(".slide-btn.left");
+        const btnRight = document.querySelector(".slide-btn.right");
+
+        function scrollAmount() {
+            const card = liveRow.querySelector(".match-card");
+            if (!card) return 300;
+            const style = getComputedStyle(liveRow);
+            const gap = parseInt(style.gap) || 16;
+            return card.offsetWidth + gap;
+        }
+
+        btnLeft?.addEventListener("click", () => {
+            liveRow.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+        });
+        btnRight?.addEventListener("click", () => {
+            liveRow.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+        });
+
+        function updateSlideButtons() {
+            btnLeft.disabled = liveRow.scrollLeft <= 0;
+            btnRight.disabled = liveRow.scrollLeft + liveRow.clientWidth >= liveRow.scrollWidth - 1;
+        }
+        liveRow.addEventListener("scroll", updateSlideButtons);
+
+        fetch(API)
+            .then((r) => r.json())
+            .then((data) => {
+                fullData = data;
+                filterAndRender(data);
+            })
+            .catch(() => {
+                const main = document.querySelector("main");
+                main.innerHTML = `<p style="color:#ff3366;text-align:center;padding: 2em;">Failed to load matches.</p>`;
+            });
+
+        document.getElementById("searchBar").addEventListener("input", (e) => {
+            if (!fullData) return;
+            filterAndRender(fullData, e.target.value);
+        });
+    </script>
+</body>
+
+</html>

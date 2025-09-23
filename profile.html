@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>StreamX – Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-color: #00e5ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 10px;
+      background: url('https://assets.nflxext.com/ffe/siteui/vlv3/c95abc7a-8124-4630-bb7a-3b160bdc6de3/web/IN-en-20250915-TRIFECTA-perspective_d3d87aa7-58ed-4c6b-98dc-231ed05ba675_small.jpg') center/cover no-repeat fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 100%);
+      z-index: -1;
+    }
+
+    header {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    header a.home-btn {
+      text-decoration: none;
+      padding: 10px 18px;
+      background: var(--theme-color);
+      color: #000;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background .3s;
+    }
+
+    header a.home-btn:hover {
+      background: #00b9d1;
+    }
+
+    .profile-card {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 960px;
+      width: 95%;
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(315deg,
+          rgba(0, 229, 255, 0.15) 0%,
+          rgba(0, 229, 255, 0.05) 50%,
+          rgba(0, 0, 0, 0.2) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 40px;
+    }
+
+    .profile-left {
+      flex: 1 1 280px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .profile-left img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover;
+      border: 3px solid var(--theme-color);
+    }
+
+    .profile-left h2 {
+      font-size: 1.4rem;
+      margin-bottom: 5px;
+    }
+
+    .profile-left p {
+      font-size: .9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .last-login {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .last-login .label {
+      font-weight: 600;
+      color: var(--theme-color);
+    }
+
+    .profile-right {
+      flex: 2 1 400px;
+      padding: 30px;
+    }
+
+    .profile-right h3 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .profile-right p {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border: none;
+      background: var(--theme-color);
+      color: #000;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .3s;
+    }
+
+    .btn:hover {
+      background: #00b9d1;
+    }
+
+    .btn.logout {
+      background: #ff4b4b;
+      color: #fff;
+    }
+
+    .btn.logout:hover {
+      background: #d63c3c;
+    }
+
+    #message {
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    .faq-section {
+      max-width: 960px;
+      width: 95%;
+      margin-bottom: 50px;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+    }
+
+    .faq {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .faq button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 15px 20px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-content {
+      padding: 0 20px 15px;
+      display: none;
+      font-size: .9rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .faq.open .faq-content {
+      display: block;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Your Profile</h1>
+    <a href="home.html" class="home-btn">Home</a>
+  </header>
+
+  <div class="profile-card">
+    <div class="profile-left">
+      <img id="userPhoto" src="assets/images/user/streamxuser.png" alt="User photo">
+      <h2 id="userName">User Name</h2>
+      <p id="userEmailSmall">user@example.com</p>
+      <div class="last-login">
+        <span class="label">Last Login:</span>
+        <span id="lastLogin">—</span>
+      </div>
+    </div>
+    <div class="profile-right">
+      <h3>Account Info</h3>
+      <p>Email: <span id="userEmail">user@example.com</span></p>
+      <p>Membership: Premium</p>
+      <button class="btn" id="resetPassBtn">Send Password Reset Link</button>
+      <p id="message"></p>
+      <button class="btn logout" id="logoutBtn" style="margin-top:10px;">Logout</button>
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+      <button>How can I change my email? <span>+</span></button>
+      <div class="faq-content">You can change your email from your account settings page.</div>
+    </div>
+    <div class="faq">
+      <button>How do I reset my password? <span>+</span></button>
+      <div class="faq-content">Click the “Send Password Reset Link” button above to receive a secure link.</div>
+    </div>
+    <div class="faq">
+      <button>How can I cancel my subscription? <span>+</span></button>
+      <div class="faq-content">Go to your billing page and choose “Cancel Membership”.</div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <script>
+    // Footer
+
+
+    fetch("streamxfooter.html")
+      .then((r) => (r.ok ? r.text() : Promise.reject()))
+      .then(
+        (h) => (document.getElementById("footer-container").innerHTML = h)
+      );
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
+      from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC3gDinL_yG_oO9SRalk4uX5Inp9jn2ZEA",
+      authDomain: "streamxlogin-5fddb.firebaseapp.com",
+      projectId: "streamxlogin-5fddb",
+      storageBucket: "streamxlogin-5fddb.appspot.com",
+      messagingSenderId: "194874847275",
+      appId: "1:194874847275:web:4d6bb0f280893edb8e7a6e",
+      measurementId: "G-2QLZCB09ZC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    const userEmailSmall = document.getElementById('userEmailSmall');
+    const userPhoto = document.getElementById('userPhoto');
+    const message = document.getElementById('message');
+    const lastLoginEl = document.getElementById('lastLogin');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userName.textContent = user.displayName || 'User';
+        userEmail.textContent = user.email;
+        userEmailSmall.textContent = user.email;
+        if (user.photoURL) userPhoto.src = user.photoURL;
+
+        // format last login nicely
+        const lastLoginDate = new Date(user.metadata.lastSignInTime);
+        const options = {
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        };
+        lastLoginEl.textContent = lastLoginDate.toLocaleString(undefined, options);
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Password reset
+    document.getElementById('resetPassBtn').addEventListener('click', async () => {
+      if (!auth.currentUser) return;
+      message.textContent = '';
+      try {
+        await sendPasswordResetEmail(auth, auth.currentUser.email);
+        message.style.color = '#28a745';
+        message.textContent = 'Password reset link sent to your email.';
+      } catch (err) {
+        message.style.color = '#ff6060';
+        message.textContent = err.message;
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const faq = btn.parentElement;
+        faq.classList.toggle('open');
+        const sign = btn.querySelector('span');
+        sign.textContent = faq.classList.contains('open') ? '–' : '+';
+      });
+    });
+  </script>
+</body>
+
+</html>

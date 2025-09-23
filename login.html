@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamX Auth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00e5ff;
+      --text-light: #f1f1f1;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Space Grotesk", sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+        url("https://assets.nflxext.com/ffe/siteui/vlv3/c95abc7a-8124-4630-bb7a-3b160bdc6de3/web/IN-en-20250915-TRIFECTA-perspective_d3d87aa7-58ed-4c6b-98dc-231ed05ba675_small.jpg")
+        no-repeat center/cover fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--text-light);
+    }
+
+    /* Hide content until Firebase resolves */
+    body.loading .container {
+      display: none;
+    }
+    body.loading::before {
+      content: "Loading...";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      color: var(--text-light);
+      font-size: 1.2rem;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 920px;
+      width: 95%;
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(315deg,
+        rgba(0,229,255,.15) 0%,
+        rgba(0,229,255,.05) 50%,
+        rgba(0,0,0,.2) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: 0 8px 30px rgba(0,0,0,.4);
+    }
+    .left, .right {
+      flex: 1 1 300px;
+      padding: 40px;
+    }
+    .left h1 {font-size:2rem;color:var(--primary);margin-bottom:8px;}
+    .form-group{margin-bottom:18px;position:relative;}
+    .form-group label{display:block;font-size:.9rem;margin-bottom:5px;}
+    .form-group input{
+      width:100%;padding:12px 44px 12px 15px;border-radius:8px;
+      border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.3);
+      color:var(--text-light);font-size:1rem;transition:border .2s;}
+    .form-group input:focus{outline:none;border-color:var(--primary);}
+    .toggle-pass{
+      position:absolute;right:12px;top:36px;cursor:pointer;
+      color:var(--text-light);transition:.2s;}
+    .toggle-pass:hover{color:var(--primary);transform:scale(1.1);}
+    .password-rules{font-size:.8rem;color:#6bb676;margin-bottom:12px;}
+    .btn{
+      background:var(--primary);color:#000;padding:14px;border:none;
+      width:100%;border-radius:8px;font-size:1rem;font-weight:600;
+      cursor:pointer;margin-top:8px;transition:opacity .2s,transform .2s;}
+    .btn:hover{opacity:.85;transform:translateY(-1px);}
+    .google-btn{
+      background:#fff;color:#000;margin-top:12px;display:flex;
+      align-items:center;justify-content:center;gap:8px;}
+    .signin-link{text-align:center;margin-top:18px;font-size:.9rem;}
+    .signin-link a{color:var(--primary);text-decoration:none;font-weight:600;cursor:pointer;}
+    .right{display:flex;flex-direction:column;justify-content:center;align-items:center;}
+    .illustration-card{
+      background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.2);
+      border-radius:12px;padding:20px;width:220px;text-align:center;
+      box-shadow:0 5px 15px rgba(0,0,0,.3);margin-bottom:20px;backdrop-filter:blur(10px);}
+    .illustration-card h2{font-size:1.8rem;margin-bottom:5px;color:var(--primary);}
+    #toast{
+      position:fixed;top:20px;right:20px;min-width:280px;background:rgba(24,27,37,.9);
+      color:var(--text-light);padding:15px 20px;border-left:5px solid var(--primary);
+      border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.6);
+      opacity:0;pointer-events:none;transition:.3s;transform:translateY(-20px);z-index:9999;}
+    #toast.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+    .home-btn{display:block;text-align:center;margin-top:15px;color:var(--primary);}
+  </style>
+</head>
+<body class="loading">
+  <div class="container">
+    <div class="left">
+      <h1 id="formTitle">Sign Up</h1>
+      <form id="authForm">
+        <div id="nameGroup" class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="fullName" placeholder="StreamX User" required />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="********" required />
+          <span class="material-icons toggle-pass" onclick="togglePassword('password',this)">visibility_off</span>
+        </div>
+        <div id="confirmGroup" class="form-group">
+          <label>Re-Type Password</label>
+          <input type="password" id="confirmPassword" placeholder="********" />
+          <span class="material-icons toggle-pass" onclick="togglePassword('confirmPassword',this)">visibility_off</span>
+        </div>
+        <div class="password-rules" id="rules">
+          ✓ At least 8 characters<br>
+          ✓ One number or symbol<br>
+          ✓ Lowercase and uppercase
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Sign Up</button>
+        <button type="button" class="btn google-btn" id="googleBtn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18">
+          Sign in with Google
+        </button>
+      </form>
+      <div class="signin-link">
+        <span id="toggleText">Already member?</span> <a id="toggleLink">Sign in</a><br>
+        <a id="forgotLink" style="display:none;cursor:pointer;">Forgot password?</a>
+      </div>
+    </div>
+    <div class="right">
+      <div class="illustration-card">
+        <h2>Welcome!</h2>
+        <p>Enjoy secure streaming with StreamX.</p>
+      </div>
+      <div class="illustration-card">
+        <p>Your privacy, your control.<br>Start watching securely.</p>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    sendPasswordResetEmail,
+    setPersistence,
+    browserLocalPersistence,
+    onAuthStateChanged,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  // your Firebase config:
+  const firebaseConfig = {
+    apiKey: "AIzaSyC3gDinL_yG_oO9SRalk4uX5Inp9jn2ZEA",
+    authDomain: "streamxlogin-5fddb.firebaseapp.com",
+    projectId: "streamxlogin-5fddb",
+    storageBucket: "streamxlogin-5fddb.firebasestorage.app",
+    messagingSenderId: "194874847275",
+    appId: "1:194874847275:web:4d6bb0f280893edb8e7a6e",
+    measurementId: "G-2QLZCB09ZC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // persist login
+  setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+  // wait for Firebase to tell us the auth state
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // already logged in → direct to home without flash
+      window.location.replace('home.html');
+    } else {
+      // not logged in → show the form
+      document.body.classList.remove('loading');
+    }
+  });
+
+  let isLogin = false;
+  const toggleLink = document.getElementById('toggleLink');
+  const formTitle = document.getElementById('formTitle');
+  const submitBtn = document.getElementById('submitBtn');
+  const nameGroup = document.getElementById('nameGroup');
+  const confirmGroup = document.getElementById('confirmGroup');
+  const rules = document.getElementById('rules');
+  const forgotLink = document.getElementById('forgotLink');
+
+  toggleLink.addEventListener('click', () => {
+    isLogin = !isLogin;
+    formTitle.textContent = isLogin ? 'Sign In' : 'Sign Up';
+    submitBtn.textContent = isLogin ? 'Sign In' : 'Sign Up';
+    nameGroup.style.display = isLogin ? 'none' : 'block';
+    confirmGroup.style.display = isLogin ? 'none' : 'block';
+    rules.style.display = isLogin ? 'none' : 'block';
+    forgotLink.style.display = isLogin ? 'inline-block' : 'none';
+    toggleLink.textContent = isLogin ? 'Sign up' : 'Sign in';
+    document.getElementById('toggleText').textContent = isLogin ? 'New here?' : 'Already member?';
+    document.getElementById('confirmPassword').required = !isLogin;
+    document.getElementById('fullName').required = !isLogin;
+  });
+
+  forgotLink.addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) { showToast('Enter your email first'); return; }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showToast('Reset email sent');
+    } catch (err) {
+      showToast(parseError(err));
+    }
+  });
+
+  document.getElementById('authForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const fullName = document.getElementById('fullName').value.trim();
+    try {
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+        showToast('Login successful!');
+        setTimeout(() => window.location.href = 'home.html', 1000);
+      } else {
+        if (password !== confirmPassword) {showToast('Passwords do not match');return;}
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCred.user, { displayName: fullName });
+        showToast('Account created successfully!');
+        setTimeout(() => window.location.href = 'home.html', 1000);
+      }
+    } catch (err) {
+      showToast(parseError(err));
+    }
+  });
+
+  document.getElementById('googleBtn').addEventListener('click', async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      showToast('Google sign-in successful!');
+      setTimeout(() => window.location.href = 'home.html', 1000);
+    } catch (err) {
+      showToast(parseError(err));
+    }
+  });
+
+  window.togglePassword = (id, el) => {
+    const input = document.getElementById(id);
+    if (input.type === 'password') {
+      input.type = 'text'; el.textContent = 'visibility';
+    } else {
+      input.type = 'password'; el.textContent = 'visibility_off';
+    }
+  };
+
+  function showToast(msg){
+    const toast=document.getElementById('toast');
+    toast.textContent=msg;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),3000);
+  }
+  function parseError(err){
+    if(!err.code)return err.message;
+    switch(err.code){
+      case 'auth/user-not-found':return 'Email not registered';
+      case 'auth/wrong-password':return 'Incorrect password';
+      case 'auth/invalid-email':return 'Invalid email address';
+      case 'auth/email-already-in-use':return 'Email already registered';
+      case 'auth/weak-password':return 'Password too weak';
+      default:return err.message;
+    }
+  }
+</script>
+</body>
+</html>

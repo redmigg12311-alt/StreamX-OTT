@@ -2,60 +2,67 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>StreamX | Series</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Series | StreamX</title>
 
-    <!-- Google Fonts & Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- Google Fonts & Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
-    <link rel="stylesheet" href="css/series.css" />
+  <link rel="stylesheet" href="css/series.css" />
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
+  <!-- Header Placeholder -->
+  <div id="header-placeholder"></div>
 
-    <main>
-        <!-- Hero Slideshow Section -->
-        <section class="hero" aria-label="Featured Series">
-            <div class="hero-slideshow">
-                <div class="slides"></div>
-                <button type="button" class="slide-btn prev" aria-label="Previous Slide">
-                    <span class="material-icons">chevron_left</span>
-                </button>
-                <button type="button" class="slide-btn next" aria-label="Next Slide">
-                    <span class="material-icons">chevron_right</span>
-                </button>
-            </div>
+  <main>
+    <!-- Hero Slideshow Section -->
+    <section class="hero" aria-label="Featured Series">
+      <div class="hero-slideshow">
+        <div class="slides"></div>
 
-            <div class="hero-content" aria-live="polite">
-                <h2 id="hero-title"></h2>
-                <p id="hero-meta"></p>
-                <p id="hero-description"></p>
-            </div>
-        </section>
+        <button type="button" class="slide-btn prev" aria-label="Previous Slide">
+          <span class="material-icons">chevron_left</span>
+        </button>
+        <button type="button" class="slide-btn next" aria-label="Next Slide">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
 
-        <!-- Series Grid Section -->
-        <div id="series-grid"></div>
+      <div class="hero-content" aria-live="polite">
+        <h2 id="hero-title"></h2>
+        <p id="hero-meta"></p>
+        <p id="hero-description"></p>
+      </div>
+    </section>
 
-        <!-- Series Modal -->
-        <div id="series-modal" class="modal hidden" role="dialog" aria-modal="true"
-            aria-labelledby="modal-series-title">
-            <div class="modal-content">
-                <button type="button" id="closeModal" class="close-btn" aria-label="Close Modal">&times;</button>
-                <div id="modal-series-info" tabindex="0"></div>
-                <div id="modal-seasons"></div>
-            </div>
+    <!-- Series Grid Section -->
+    <section id="series-grid" aria-label="All Series"></section>
+
+    <!-- Series Modal -->
+    <div id="series-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-series-title">
+      <div class="modal-content">
+        <button type="button" id="closeModal" class="close-btn" aria-label="Close Modal">&times;</button>
+        
+        <!-- Series Info -->
+        <div id="modal-series-info" tabindex="0"></div>
+
+        <!-- Season Selector + Episodes -->
+        <div id="modal-seasons">
+          <!-- Dropdown will be injected dynamically -->
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 
-    <div id="footer-container"></div>
+  <!-- Footer Placeholder -->
+  <div id="footer-container"></div>
 
-    <!-- Scripts -->
-    <script src="js/series/seriesdata.js"></script>
-    <script src="js/series/series.js"></script>
-
+  <!-- Scripts -->
+  <script src="js/series/seriesdata.js"></script>
+  <script src="js/series/series.js"></script>
 </body>
 
 </html>
