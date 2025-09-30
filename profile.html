@@ -2,367 +2,783 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>StreamX – Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --theme-color: #00e5ff;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamX | Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #00e5ff;
+            --hover-color: #00b9d1;
+            --logout-color: #ff4b4b;
+            --logout-hover: #d63c3c;
+            --cancel-color: #ffaa00;
+            --cancel-hover: #e69900;
+            --bg-gradient: linear-gradient(to bottom right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.55));
+            --popup-bg: rgba(0, 0, 0, 0.85);
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Space Grotesk', sans-serif;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
-    body {
-      position: relative;
-      min-height: 100vh;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 10px;
-      background: url('https://assets.nflxext.com/ffe/siteui/vlv3/c95abc7a-8124-4630-bb7a-3b160bdc6de3/web/IN-en-20250915-TRIFECTA-perspective_d3d87aa7-58ed-4c6b-98dc-231ed05ba675_small.jpg') center/cover no-repeat fixed;
-    }
+        body {
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            background: url('https://assets.nflxext.com/ffe/siteui/vlv3/c95abc7a-8124-4630-bb7a-3b160bdc6de3/web/IN-en-20250915-TRIFECTA-perspective_d3d87aa7-58ed-4c6b-98dc-231ed05ba675_small.jpg') center/cover no-repeat fixed;
+            position: relative;
+        }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 100%);
-      z-index: -1;
-    }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            z-index: -1;
+        }
 
-    header {
-      width: 100%;
-      max-width: 960px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      z-index: 1;
-    }
+        header {
+            width: 100%;
+            max-width: 960px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
 
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
 
-    header a.home-btn {
-      text-decoration: none;
-      padding: 10px 18px;
-      background: var(--theme-color);
-      color: #000;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: background .3s;
-    }
+        header a.home-btn {
+            text-decoration: none;
+            padding: 10px 18px;
+            background: var(--theme-color);
+            color: #000;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
 
-    header a.home-btn:hover {
-      background: #00b9d1;
-    }
+        header a.home-btn:hover {
+            background: var(--hover-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    .profile-card {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 960px;
-      width: 95%;
-      border-radius: 20px;
-      overflow: hidden;
-      background: linear-gradient(315deg,
-          rgba(0, 229, 255, 0.15) 0%,
-          rgba(0, 229, 255, 0.05) 50%,
-          rgba(0, 0, 0, 0.2) 100%);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-      margin-bottom: 40px;
-    }
+        .dashboard {
+            max-width: 960px;
+            width: 95%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            transition: all 0.3s ease;
+            margin-top: 80px;
+        }
 
-    .profile-left {
-      flex: 1 1 280px;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-    }
+        /* Glassmorphism Cards */
+        .profile-card,
+        .payment-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .profile-left img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-      object-fit: cover;
-      border: 3px solid var(--theme-color);
-    }
+        .profile-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
 
-    .profile-left h2 {
-      font-size: 1.4rem;
-      margin-bottom: 5px;
-    }
+        .profile-left img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--theme-color);
+            margin-bottom: 10px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
 
-    .profile-left p {
-      font-size: .9rem;
-      color: rgba(255, 255, 255, 0.8);
-    }
+        .profile-left img:hover {
+            transform: scale(1.05);
+        }
 
-    .last-login {
-      margin-top: 10px;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.8);
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+        .profile-left h2 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--theme-color);
+        }
 
-    .last-login .label {
-      font-weight: 600;
-      color: var(--theme-color);
-    }
+        .profile-left p,
+        .last-login span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
 
-    .profile-right {
-      flex: 2 1 400px;
-      padding: 30px;
-    }
+        .last-login {
+            margin-top: 8px;
+            display: flex;
+            gap: 6px;
+        }
 
-    .profile-right h3 {
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
+        .last-login .label {
+            color: var(--theme-color);
+            font-weight: 600;
+        }
 
-    .profile-right p {
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
+        .profile-right {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
 
-    .btn {
-      display: inline-block;
-      padding: 10px 16px;
-      border: none;
-      background: var(--theme-color);
-      color: #000;
-      font-weight: 600;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background .3s;
-    }
+        .profile-right h3 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: var(--theme-color);
+        }
 
-    .btn:hover {
-      background: #00b9d1;
-    }
+        .profile-right p {
+            margin-bottom: 04px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
 
-    .btn.logout {
-      background: #ff4b4b;
-      color: #fff;
-    }
+        /* Buttons */
+        .btn {
+            padding: 12px 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
 
-    .btn.logout:hover {
-      background: #d63c3c;
-    }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    #message {
-      font-size: 0.9rem;
-      margin-top: 8px;
-    }
+        .btn.logout {
+            background: var(--logout-color);
+            color: #fff;
+            margin-top: 10px;
+        }
 
-    .faq-section {
-      max-width: 960px;
-      width: 95%;
-      margin-bottom: 50px;
-    }
+        .btn.logout:hover {
+            background: var(--logout-hover);
+        }
 
-    .faq-section h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.6rem;
-    }
+        .btn.cancel {
+            background: var(--cancel-color);
+            color: #000;
+            margin-top: 10px;
+        }
 
-    .faq {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-    }
+        .btn.cancel:hover {
+            background: var(--cancel-hover);
+        }
 
-    .faq button {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      padding: 15px 20px;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        h2 {
+            color: var(--theme-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-    .faq-content {
-      padding: 0 20px 15px;
-      display: none;
-      font-size: .9rem;
-      color: rgba(255, 255, 255, 0.9);
-    }
+        .plans {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-    .faq.open .faq-content {
-      display: block;
-    }
+        .plan {
+            padding: 15px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
 
-  </style>
+        .plan:hover {
+            transform: translateY(-4px);
+            border: 1px solid var(--theme-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .plan.active {
+            border: 2px solid var(--theme-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .plan h3 {
+            color: var(--theme-color);
+            margin-bottom: 6px;
+        }
+
+        .meta {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        button#payBtn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            background: var(--theme-color);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        button#payBtn:hover:not([disabled]) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button[disabled] {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            animation: fadeIn 0.5s ease forwards;
+            margin-top: 10px;
+        }
+
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--popup-bg);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .popup.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* FAQ container */
+        .faq {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            padding-top: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(15px) saturate(180%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-section {
+            margin-bottom: 30px;
+            padding-top: 30px;
+        }
+
+        .faq button {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .faq:hover button {
+            color: var(--theme-color);
+            transform: translateX(2px);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq:hover .faq-content {
+            max-height: 500px;
+            padding-bottom: 25px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                max-height: 0;
+            }
+
+            100% {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-  <header>
-    <h1>Your Profile</h1>
-    <a href="home.html" class="home-btn">Home</a>
-  </header>
+    <!-- <header>
+        <h1>StreamX Dashboard</h1>
+        <a href="home.html" class="home-btn">Home</a>
+    </header> -->
+    <div id="header-placeholder"></div>
 
-  <div class="profile-card">
-    <div class="profile-left">
-      <img id="userPhoto" src="assets/images/user/streamxuser.png" alt="User photo">
-      <h2 id="userName">User Name</h2>
-      <p id="userEmailSmall">user@example.com</p>
-      <div class="last-login">
-        <span class="label">Last Login:</span>
-        <span id="lastLogin">—</span>
-      </div>
+    <div class="dashboard">
+        <!-- Profile -->
+        <div class="profile-card">
+            <div class="profile-left">
+                <img id="userPhoto" src="assets/images/user/streamxuser.png" alt="User photo">
+                <h2 id="userName">User</h2>
+                <p id="userEmailSmall">user@example.com</p>
+                <div class="last-login">
+                    <span class="label">Last Login:</span>
+                    <span id="lastLogin">—</span>
+                </div>
+            </div>
+            <div class="profile-right">
+                <h3>Account Info</h3>
+                <p>Email: <span id="userEmail">user@example.com</span></p>
+                <p>Membership: <span id="membershipStatus">Free</span></p>
+                <p>Expiry: <span id="membershipExpiry">—</span></p>
+                <button class="btn" id="resetPassBtn">Send Password Reset Link</button>
+                <button class="btn cancel" id="cancelBtn">Cancel Membership</button>
+                <button class="btn logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Subscription/Payment -->
+        <div class="payment-card">
+            <h2>Choose Your Plan</h2>
+            <div class="plans">
+                <div class="plan" data-plan="Basic" data-price="149" onclick="selectPlan(this)">
+                    <h3>Basic</h3>
+                    <div class="meta">₹149 / month • 720p • 1 device</div>
+                </div>
+                <div class="plan" data-plan="Standard" data-price="499" onclick="selectPlan(this)">
+                    <h3>Standard</h3>
+                    <div class="meta">₹499 / month • 1080p • 2 devices</div>
+                </div>
+                <div class="plan" data-plan="Premium" data-price="799" onclick="selectPlan(this)">
+                    <h3>Premium</h3>
+                    <div class="meta">₹799 / month • 4K Ultra HD • 4 devices</div>
+                </div>
+            </div>
+            <div id="selection" style="margin-top:10px;">No plan selected</div>
+            <button id="payBtn" disabled>Pay Now</button>
+            <p style="margin-top:8px;font-size:0.85rem;color:rgba(255,255,255,0.8)">
+            </p>
+            <div class="success-message" id="successMessage">
+                <h2>Payment Successful!</h2>
+                <p>Thank you for subscribing to StreamX.</p>
+            </div>
+        </div>
     </div>
-    <div class="profile-right">
-      <h3>Account Info</h3>
-      <p>Email: <span id="userEmail">user@example.com</span></p>
-      <p>Membership: Premium</p>
-      <button class="btn" id="resetPassBtn">Send Password Reset Link</button>
-      <p id="message"></p>
-      <button class="btn logout" id="logoutBtn" style="margin-top:10px;">Logout</button>
-    </div>
-  </div>
 
-  <section class="faq-section">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq">
-      <button>How can I change my email? <span>+</span></button>
-      <div class="faq-content">You can change your email from your account settings page.</div>
-    </div>
-    <div class="faq">
-      <button>How do I reset my password? <span>+</span></button>
-      <div class="faq-content">Click the “Send Password Reset Link” button above to receive a secure link.</div>
-    </div>
-    <div class="faq">
-      <button>How can I cancel my subscription? <span>+</span></button>
-      <div class="faq-content">Go to your billing page and choose “Cancel Membership”.</div>
-    </div>
-  </section>
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
 
-  <div id="footer-container"></div>
+        <div class="faq">
+            <button>How can I change my email? <span>+</span></button>
+            <div class="faq-content">
+                You can update your email address by navigating to your account settings. Ensure the new email is
+                valid and accessible, as a verification link will be sent.
+            </div>
+        </div>
 
-  <script>
-    // Footer
+        <div class="faq">
+            <button>How do I reset my password? <span>+</span></button>
+            <div class="faq-content">
+                To reset your password, click the “Send Password Reset Link” button on your dashboard. You will
+                receive a secure email to create a new password.
+            </div>
+        </div>
 
+        <div class="faq">
+            <button>How can I cancel my subscription? <span>+</span></button>
+            <div class="faq-content">
+                Visit your billing page and select “Cancel Membership.” Your subscription will remain active until
+                the end of the current billing cycle.
+            </div>
+        </div>
 
-    fetch("streamxfooter.html")
-      .then((r) => (r.ok ? r.text() : Promise.reject()))
-      .then(
-        (h) => (document.getElementById("footer-container").innerHTML = h)
-      );
-  </script>
+        <div class="faq">
+            <button>What payment methods are accepted? <span>+</span></button>
+            <div class="faq-content">
+                StreamX supports major payment methods including credit/debit cards, UPI, net banking, and digital
+                wallets. Ensure your payment method has sufficient balance and is valid.
+            </div>
+        </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
-      from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        <div class="faq">
+            <button>Can I upgrade or downgrade my plan? <span>+</span></button>
+            <div class="faq-content">
+                Yes, you can upgrade or downgrade your subscription at any time. The changes will take effect
+                immediately, and billing will be prorated according to the remaining cycle.
+            </div>
+        </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC3gDinL_yG_oO9SRalk4uX5Inp9jn2ZEA",
-      authDomain: "streamxlogin-5fddb.firebaseapp.com",
-      projectId: "streamxlogin-5fddb",
-      storageBucket: "streamxlogin-5fddb.appspot.com",
-      messagingSenderId: "194874847275",
-      appId: "1:194874847275:web:4d6bb0f280893edb8e7a6e",
-      measurementId: "G-2QLZCB09ZC"
-    };
+        <div class="faq">
+            <button>How do I view my billing history? <span>+</span></button>
+            <div class="faq-content">
+                All past invoices and payment details can be accessed under the “Billing History” section of your
+                account. You can download receipts in PDF format for your records.
+            </div>
+        </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+        <div class="faq">
+            <button>What should I do if I experience streaming issues? <span>+</span></button>
+            <div class="faq-content">
+                First, check your internet connection. Clear your browser cache or app data if issues persist. For
+                unresolved problems, contact our support team with a detailed description of the issue.
+            </div>
+        </div>
 
-    const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
-    const userEmailSmall = document.getElementById('userEmailSmall');
-    const userPhoto = document.getElementById('userPhoto');
-    const message = document.getElementById('message');
-    const lastLoginEl = document.getElementById('lastLogin');
+        <div class="faq">
+            <button>Can I share my account with family members? <span>+</span></button>
+            <div class="faq-content">
+                Your subscription allows streaming on multiple devices based on the plan you select. Sharing login
+                credentials outside your household is not recommended to avoid service interruptions.
+            </div>
+        </div>
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        userName.textContent = user.displayName || 'User';
-        userEmail.textContent = user.email;
-        userEmailSmall.textContent = user.email;
-        if (user.photoURL) userPhoto.src = user.photoURL;
+        <div class="faq">
+            <button>How do I reactivate a canceled subscription? <span>+</span></button>
+            <div class="faq-content">
+                To reactivate, simply select a plan on your dashboard and complete the payment process. Your account
+                will be restored immediately with full access.
+            </div>
+        </div>
 
-        // format last login nicely
-        const lastLoginDate = new Date(user.metadata.lastSignInTime);
-        const options = {
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
+        <div class="faq">
+            <button>Is there a free trial available? <span>+</span></button>
+            <div class="faq-content">
+                StreamX occasionally offers free trials for new users. Check the homepage or your account dashboard
+                for current promotions and eligibility.
+            </div>
+        </div>
+
+        <div class="faq">
+            <button>How do I contact customer support? <span>+</span></button>
+            <div class="faq-content">
+                You can reach our support team via the “Contact Us” page, live chat, or email support@streamx.com.
+                Our team is available 24/7 to assist with any issues.
+            </div>
+        </div>
+    </section>
+
+    <!-- Popup -->
+    <div id="popup" class="popup"></div>
+
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3gDinL_yG_oO9SRalk4uX5Inp9jn2ZEA",
+            authDomain: "streamxlogin-5fddb.firebaseapp.com",
+            projectId: "streamxlogin-5fddb",
+            storageBucket: "streamxlogin-5fddb.appspot.com",
+            messagingSenderId: "194874847275",
+            appId: "1:194874847275:web:4d6bb0f280893edb8e7a6e",
+            measurementId: "G-2QLZCB09ZC"
         };
-        lastLoginEl.textContent = lastLoginDate.toLocaleString(undefined, options);
-      } else {
-        window.location.href = 'login.html';
-      }
-    });
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-    // Password reset
-    document.getElementById('resetPassBtn').addEventListener('click', async () => {
-      if (!auth.currentUser) return;
-      message.textContent = '';
-      try {
-        await sendPasswordResetEmail(auth, auth.currentUser.email);
-        message.style.color = '#28a745';
-        message.textContent = 'Password reset link sent to your email.';
-      } catch (err) {
-        message.style.color = '#ff6060';
-        message.textContent = err.message;
-      }
-    });
+        // Elements
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userEmailSmall = document.getElementById('userEmailSmall');
+        const userPhoto = document.getElementById('userPhoto');
+        const lastLoginEl = document.getElementById('lastLogin');
+        const membershipStatus = document.getElementById('membershipStatus');
+        const membershipExpiry = document.getElementById('membershipExpiry');
+        const popup = document.getElementById('popup');
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.href = 'login.html';
-      } catch (err) {
-        console.error(err);
-      }
-    });
+        // Popup helper
+        function showPopup(msg, color = "#00e5ff") {
+            popup.textContent = msg;
+            popup.style.background = color.includes('#') ? color : '#00e5ff';
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
 
-    // FAQ accordion
-    document.querySelectorAll('.faq button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const faq = btn.parentElement;
-        faq.classList.toggle('open');
-        const sign = btn.querySelector('span');
-        sign.textContent = faq.classList.contains('open') ? '–' : '+';
-      });
-    });
-  </script>
+        function updateMembership(user) {
+            const planKey = user.uid + '_plan';
+            const expiryKey = user.uid + '_expiry';
+            const plan = localStorage.getItem(planKey);
+            const expiry = localStorage.getItem(expiryKey);
+
+            if (plan && expiry) {
+                const now = new Date();
+                const expDate = new Date(expiry);
+                if (now > expDate) {
+                    localStorage.removeItem(planKey);
+                    localStorage.removeItem(expiryKey);
+                    membershipStatus.textContent = 'Free';
+                    membershipExpiry.textContent = 'Expired';
+                } else {
+                    membershipStatus.textContent = `Purchased — ${plan}`;
+                    membershipExpiry.textContent = expDate.toLocaleDateString();
+                }
+            } else {
+                membershipStatus.textContent = 'Free';
+                membershipExpiry.textContent = '—';
+            }
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (!user) { window.location.href = 'login.html'; return; }
+            userName.textContent = user.displayName || "User";
+            userEmail.textContent = user.email;
+            userEmailSmall.textContent = user.email;
+            if (user.photoURL) userPhoto.src = user.photoURL;
+            const lastLoginDate = new Date(user.metadata.lastSignInTime);
+            lastLoginEl.textContent = lastLoginDate.toLocaleString();
+            updateMembership(user);
+        });
+
+        // Cancel membership
+        document.getElementById('cancelBtn').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            localStorage.removeItem(user.uid + '_plan');
+            localStorage.removeItem(user.uid + '_expiry');
+            membershipStatus.textContent = 'Free';
+            membershipExpiry.textContent = '—';
+            // remove from Firestore
+            await db.collection('subscriptions').doc(user.uid).delete().catch(() => { });
+            showPopup("Membership cancelled.", "#ffaa00");
+        });
+
+        // Password reset
+        document.getElementById('resetPassBtn').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            try {
+                await auth.sendPasswordResetEmail(user.email);
+                showPopup("Password reset link sent!", "#28a745");
+            } catch (err) {
+                showPopup(err.message, "#ff6060");
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try { await auth.signOut(); window.location.href = 'login.html'; }
+            catch (err) { showPopup(err.message, "#ff6060"); }
+        });
+
+        // Payment
+        let selectedPlan = null, selectedPrice = 0;
+        function selectPlan(el) {
+            document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            selectedPlan = el.dataset.plan;
+            selectedPrice = parseInt(el.dataset.price);
+            document.getElementById('selection').innerText = `${selectedPlan} — ₹${selectedPrice}`;
+            document.getElementById('payBtn').disabled = false;
+        }
+
+        document.getElementById('payBtn').addEventListener('click', e => {
+            const user = auth.currentUser;
+            if (!selectedPlan) { showPopup('Select a plan', '#ffaa00'); return; }
+            if (!user) { showPopup('Login first!', '#ffaa00'); return; }
+
+            const options = {
+                key: "rzp_test_RNiGKKftR49E3F",
+                amount: selectedPrice * 100,
+                currency: "INR",
+                name: "StreamX",
+                description: `${selectedPlan} subscription`,
+                image: "https://i.ibb.co/HftGtTsH/streamxuser.png",
+                notes: { plan: selectedPlan },
+                theme: { color: "#00e5ff" },
+                handler: async function (response) {
+                    const planKey = user.uid + '_plan';
+                    const expiryKey = user.uid + '_expiry';
+                    const expiryDate = new Date();
+                    expiryDate.setDate(expiryDate.getDate() + 30);
+                    localStorage.setItem(planKey, selectedPlan);
+                    localStorage.setItem(expiryKey, expiryDate.toISOString());
+                    updateMembership(user);
+
+                    // Save subscription in Firebase
+                    await db.collection('subscriptions').doc(user.uid).set({
+                        plan: selectedPlan,
+                        price: selectedPrice,
+                        expiry: expiryDate.toISOString(),
+                        paymentId: response.razorpay_payment_id
+                    });
+
+                    document.getElementById('successMessage').style.display = 'block';
+                    showPopup("Payment Successful!", "#28a745");
+
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+            e.preventDefault();
+        });
+
+
+        // Smooth FAQ toggle
+        document.querySelectorAll('.faq button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const faq = btn.parentElement;
+                const content = faq.querySelector('.faq-content');
+                const sign = btn.querySelector('span');
+
+                // Close all other FAQs
+                document.querySelectorAll('.faq').forEach(otherFaq => {
+                    if (otherFaq !== faq && otherFaq.classList.contains('open')) {
+                        const otherContent = otherFaq.querySelector('.faq-content');
+                        const otherSign = otherFaq.querySelector('span');
+                        otherContent.style.height = otherContent.scrollHeight + 'px';
+                        requestAnimationFrame(() => {
+                            otherContent.style.height = '0px';
+                        });
+                        otherContent.addEventListener('transitionend', function handler() {
+                            otherFaq.classList.remove('open');
+                            otherContent.style.height = '';
+                            otherContent.removeEventListener('transitionend', handler);
+                        });
+                        otherSign.textContent = '+';
+                    }
+                });
+
+                // Toggle current FAQ
+                if (faq.classList.contains('open')) {
+                    // Close current FAQ
+                    content.style.height = content.scrollHeight + 'px';
+                    requestAnimationFrame(() => {
+                        content.style.height = '0px';
+                    });
+                    content.addEventListener('transitionend', function handler() {
+                        faq.classList.remove('open');
+                        content.style.height = '';
+                        content.removeEventListener('transitionend', handler);
+                    });
+                    sign.textContent = '+';
+                } else {
+                    // Open current FAQ
+                    faq.classList.add('open');
+                    content.style.height = '0px';
+                    requestAnimationFrame(() => {
+                        content.style.height = content.scrollHeight + 'px';
+                    });
+                    content.addEventListener('transitionend', function handler() {
+                        content.style.height = '';
+                        content.removeEventListener('transitionend', handler);
+                    });
+                    sign.textContent = '–';
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        // header
+        fetch("header.html")
+            .then((r) => (r.ok ? r.text() : Promise.reject()))
+            .then(
+                (h) => (document.getElementById("header-placeholder").innerHTML = h)
+            );
+        // Footer
+        fetch("streamxfooter.html")
+            .then((r) => (r.ok ? r.text() : Promise.reject()))
+            .then(
+                (h) => (document.getElementById("footer-container").innerHTML = h)
+            );
+    </script>
 </body>
 
 </html>

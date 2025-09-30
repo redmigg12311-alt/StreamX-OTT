@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Sports | StreamX</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
-        rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/sports.css" />
 
-</head>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-<body>
+    <!-- Auth script -->
+    <script src="auth.js"></script>
+  </head>
+
+  <body>
     <div id="header-placeholder"></div>
 
     <div class="header2">
-        <div class="header2-container">
-            <input type="search" id="searchBar" placeholder="Search matches, teams, events..."
-                aria-label="Search matches" />
-        </div>
+      <div class="header2-container">
+        <input
+          type="search"
+          id="searchBar"
+          placeholder="Search matches, teams, events..."
+          aria-label="Search matches"
+        />
+      </div>
     </div>
 
     <main>
-        <div id="allCategoriesContainer"></div>
-        <p style="text-align:center; color:#bbb;"></p>
+      <div id="allCategoriesContainer"></div>
+      <p style="text-align: center; color: #bbb"></p>
     </main>
 
     <div id="footer-container"></div>
 
     <script src="js\sports.js"></script>
-
-</body>
-
+  </body>
 </html>

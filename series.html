@@ -11,6 +11,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/series.css" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <!-- Auth script -->
+  <script src="auth.js"></script>
 </head>
 
 <body>
@@ -44,8 +51,10 @@
     <!-- Series Modal -->
     <div id="series-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-series-title">
       <div class="modal-content">
-        <button type="button" id="closeModal" class="close-btn" aria-label="Close Modal">&times;</button>
-        
+        <button type="button" id="closeModal" class="close-btn" aria-label="Close Modal">
+          &times;
+        </button>
+
         <!-- Series Info -->
         <div id="modal-series-info" tabindex="0"></div>
 
